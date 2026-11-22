@@ -182,3 +182,65 @@ describe("calculateCashForecast", () => {
     expect(day0.balanceINR).toBe(currentCash + day0.inflowINR - day0.outflowINR);
   });
 });
+
+describe("Slice 08 edge cases", () => {
+  it("keeps a zero opening balance at zero when there are no events", () => {
+    const forecast = calculateCashForecast(0, [], [], 30, START);
+
+    expect(forecast.days.every((day) => day.balanceINR === 0)).toBe(true);
+    expect(forecast.lowestBalanceINR).toBe(0);
+    expect(forecast.firstNegativeDate).toBeNull();
+  });
+
+  it("reports a negative opening balance as negative from day 0", () => {
+    const forecast = calculateCashForecast(-1000, [], [], 30, START);
+
+    expect(forecast.firstNegativeDate).toBe(START);
+    expect(forecast.lowestBalanceINR).toBe(-1000);
+    expect(forecast.days[29].balanceINR).toBe(-1000);
+  });
+
+  it("returns a flat forecast with no events when bills and invoices are empty", () => {
+    const forecast = calculateCashForecast(5000, [], [], 30, START);
+
+    expect(forecast.events).toEqual([]);
+    expect(forecast.days).toHaveLength(30);
+    expect(
+      forecast.days.every(
+        (day) => day.inflowINR === 0 && day.outflowINR === 0 && day.balanceINR === 5000 && day.events.length === 0,
+      ),
+    ).toBe(true);
+  });
+
+  it("includes a bill due exactly on the last horizon day", () => {
+    const lastDay = addDays(START, 29);
+    const bill = makeBill({ id: "B-EDGE", recurrence: "one-time", dueDate: lastDay, amountINR: 1000 });
+    const forecast = calculateCashForecast(5000, [], [bill], 30, START);
+
+    expect(forecast.days[29].date).toBe(lastDay);
+    expect(forecast.days[29].outflowINR).toBe(1000);
+    expect(forecast.events).toHaveLength(1);
+  });
+
+  it("excludes a bill due one day after the horizon end", () => {
+    const dayAfter = addDays(START, 30);
+    const bill = makeBill({ id: "B-AFTER", recurrence: "one-time", dueDate: dayAfter, amountINR: 1000 });
+    const forecast = calculateCashForecast(5000, [], [bill], 30, START);
+
+    expect(forecast.events).toHaveLength(0);
+    expect(forecast.days.every((day) => day.outflowINR === 0)).toBe(true);
+  });
+
+  it("ignores a paid invoice whose due date is in the past instead of expecting it on startDate", () => {
+    const paidPast = makeInvoice({
+      id: "INV-PAID-PAST",
+      status: "paid",
+      dueDate: addDays(START, -10),
+      paidDate: addDays(START, -10),
+    });
+    const forecast = calculateCashForecast(0, [paidPast], [], 30, START);
+
+    expect(forecast.events).toHaveLength(0);
+    expect(forecast.days.every((day) => day.inflowINR === 0)).toBe(true);
+  });
+});

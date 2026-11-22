@@ -180,3 +180,43 @@ describe("applyDelays", () => {
     expect(invoices).toEqual(snapshot);
   });
 });
+
+describe("Slice 08 edge cases", () => {
+  it("leaves the forecast unchanged when every delay is 0", () => {
+    const invoice = makeInvoice({ id: "INV-Z", status: "sent", amountINR: 20000, dueDate: addDays(START, 3) });
+
+    expect(applyDelays([invoice], { "INV-Z": 0 }, START)[0]).toBe(invoice);
+    expect(simulateForecast(10000, [invoice], [], 60, { "INV-Z": 0 }, START)).toEqual(
+      calculateCashForecast(10000, [invoice], [], 60, START),
+    );
+  });
+
+  it("ignores negative and NaN delays, returning the invoice unchanged", () => {
+    const invoice = makeInvoice({ id: "INV-N", status: "sent", dueDate: addDays(START, 3) });
+
+    expect(applyDelays([invoice], { "INV-N": -5 }, START)[0]).toBe(invoice);
+    expect(applyDelays([invoice], { "INV-N": Number.NaN }, START)[0]).toBe(invoice);
+  });
+
+  it("returns an empty selection and an empty forecast when there are no invoices", () => {
+    expect(badDaySelection([], START)).toEqual({ clientIds: [], availableClientCount: 0, invoiceIds: [] });
+    expect(simulateForecast(0, [], [], 30, {}, START)).toEqual(calculateCashForecast(0, [], [], 30, START));
+  });
+
+  it("does not mutate its inputs: invoices, bills and delays are unchanged after simulation and selection", () => {
+    const invoices = [
+      makeInvoice({ id: "INV-O", status: "overdue", amountINR: 50000, dueDate: addDays(START, -10) }),
+      makeInvoice({ id: "INV-S", status: "sent", clientId: "C-02", dueDate: addDays(START, 3) }),
+      makeInvoice({ id: "INV-P", status: "paid", clientId: "C-03", paidDate: START }),
+    ];
+    const bills = [makeBill({ id: "B-RENT", recurrence: "monthly", dueDate: addDays(START, 4) })];
+    const delays = { "INV-O": 15, "INV-S": 20 };
+    const before = JSON.stringify({ invoices, bills, delays });
+
+    simulateForecast(10000, invoices, bills, 60, delays, START);
+    applyDelays(invoices, delays, START);
+    badDaySelection(invoices, START);
+
+    expect(JSON.stringify({ invoices, bills, delays })).toBe(before);
+  });
+});

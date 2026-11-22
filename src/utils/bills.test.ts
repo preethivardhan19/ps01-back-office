@@ -282,3 +282,156 @@ describe("amount validation", () => {
   );
 });
 
+
+describe("Slice 08 bill validation hardening", () => {
+  const baseDateInput = (dueDate: string) => ({
+    name: "Rent",
+    category: "Housing",
+    amount: "100",
+    dueDate,
+    recurring: false,
+  });
+
+  const amountInput = (amount: string) => ({
+    name: "Rent",
+    category: "Housing",
+    amount,
+    dueDate: "2026-05-01",
+    recurring: false,
+  });
+
+  it.each(["2024-02-29", "2000-02-29", "0000-02-29"])(
+    "accepts leap-day dueDate %j",
+    (dueDate) => {
+      const { errors, value } = validateBillInput(baseDateInput(dueDate));
+      expect(errors).toEqual({});
+      expect(value).not.toBeNull();
+    },
+  );
+
+  it.each([
+    "1900-02-29",
+    "2100-02-29",
+    "2023-02-29",
+    "2026-04-31",
+    "2026-13-01",
+    "2026-00-10",
+    "2026-01-00",
+    "2026-1-05",
+    "not-a-date",
+  ])("rejects impossible or malformed dueDate %j", (dueDate) => {
+    const { errors, value } = validateBillInput(baseDateInput(dueDate));
+    expect(value).toBeNull();
+    expect(errors.dueDate).toBeDefined();
+  });
+
+  it.each([
+    ["0.01", 0.01],
+    ["500.5", 500.5],
+    ["1234.56", 1234.56],
+    [" 500 ", 500],
+  ])("accepts amount %j as %d", (amount, expected) => {
+    const { errors, value } = validateBillInput(amountInput(amount));
+    expect(errors).toEqual({});
+    expect(value?.amountINR).toBe(expected);
+  });
+
+  it.each([
+    "0.001",
+    "1e3",
+    "-5",
+    "0",
+    "0.00",
+    "NaN",
+    "Infinity",
+    "+5",
+    "1" + "0".repeat(400),
+  ])("rejects amount %j", (amount) => {
+    const { errors, value } = validateBillInput(amountInput(amount));
+    expect(value).toBeNull();
+    expect(errors.amount).toBeDefined();
+  });
+
+  it("does not reject legitimate duplicate bills", () => {
+    const input = {
+      name: "Internet",
+      category: "Utilities",
+      amount: "999",
+      dueDate: "2026-05-10",
+      recurring: false,
+    };
+    const first = validateBillInput(input);
+    const second = validateBillInput(input);
+    expect(first.value).not.toBeNull();
+    expect(first.errors).toEqual({});
+    expect(second.value).not.toBeNull();
+    expect(second.errors).toEqual({});
+  });
+
+  it("payBill rejects a bill with NaN amount and leaves state untouched", () => {
+    const state: BillState = {
+      bills: [
+        {
+          id: "b1",
+          name: "Rent",
+          category: "Housing",
+          amountINR: NaN,
+          dueDate: "2026-05-01",
+          status: "upcoming",
+          recurrence: "one-time",
+          anchorDate: "2026-05-01",
+        },
+      ],
+      billPayments: [],
+      cashAccounts: [{ id: "a1", label: "Main", balanceINR: 1000, asOfDate: "2026-04-01" }],
+    };
+    const before = JSON.stringify(state);
+    const result = payBill(state, {
+      billId: "b1",
+      accountId: "a1",
+      paidDate: "2026-05-01",
+      paymentId: "p1",
+    });
+    expect(result.ok).toBe(false);
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it("payBill rejects an impossible paid date and leaves state untouched", () => {
+    const state: BillState = {
+      bills: [
+        {
+          id: "b1",
+          name: "Rent",
+          category: "Housing",
+          amountINR: 100,
+          dueDate: "2026-05-01",
+          status: "upcoming",
+          recurrence: "one-time",
+          anchorDate: "2026-05-01",
+        },
+      ],
+      billPayments: [],
+      cashAccounts: [{ id: "a1", label: "Main", balanceINR: 1000, asOfDate: "2026-04-01" }],
+    };
+    const before = JSON.stringify(state);
+    const result = payBill(state, {
+      billId: "b1",
+      accountId: "a1",
+      paidDate: "2026-02-30",
+      paymentId: "p1",
+    });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error).toBe("Paid date must be a valid YYYY-MM-DD date.");
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it.each([
+    ["2024-02-29", "monthly", "2024-02-29", "2024-03-29"],
+    ["2000-02-29", "monthly", "2000-02-29", "2000-03-29"],
+    ["2026-01-31", "monthly", "2026-01-31", "2026-02-28"],
+  ])("nextDueDate(%j, %j, %j) is %j", (anchor, recurrence, currentDue, expected) => {
+    expect(nextDueDate(anchor, recurrence as Bill["recurrence"], currentDue)).toBe(expected);
+  });
+});
+

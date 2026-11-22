@@ -61,8 +61,18 @@ function parseIso(date: string): { y: number; m: number; d: number } | null {
   return { y, m, d };
 }
 
+/** True only for a real calendar date in strict "YYYY-MM-DD" form (rejects e.g. 2026-02-30). */
+export function isValidIsoDate(date: string): boolean {
+  return parseIso(date) !== null;
+}
+
+function isLeapYear(year: number): boolean {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
 function daysInMonth(year: number, monthIndex0: number): number {
-  return new Date(Date.UTC(year, monthIndex0 + 1, 0)).getUTCDate();
+  const days = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return days[monthIndex0];
 }
 
 function pad(n: number, width: number): string {
@@ -166,6 +176,7 @@ export function createBill(value: BillValue, id: string): Bill {
  */
 export function payBill(state: BillState, args: PayBillArgs): PayBillResult {
   const { billId, accountId, paidDate, paymentId } = args;
+  if (!parseIso(paidDate)) return { ok: false, error: "Paid date must be a valid YYYY-MM-DD date." };
 
   const bill = state.bills.find((b) => b.id === billId);
   if (!bill) return { ok: false, error: "Bill not found." };
@@ -174,7 +185,7 @@ export function payBill(state: BillState, args: PayBillArgs): PayBillResult {
   const account = state.cashAccounts.find((a) => a.id === accountId);
   if (!account) return { ok: false, error: "Payment account not found." };
 
-  if (!(bill.amountINR > 0)) return { ok: false, error: "Bill amount must be greater than 0." };
+  if (!Number.isFinite(bill.amountINR) || !(bill.amountINR > 0)) return { ok: false, error: "Bill amount must be greater than 0." };
 
   const occurrenceDueDate = bill.dueDate;
 

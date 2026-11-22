@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PersistenceNotice from "./components/PersistenceNotice";
 import ReminderDrawer from "./components/ReminderDrawer";
 import Sidebar, { type ScreenId } from "./components/Sidebar";
 import { AppStateProvider, useAppState } from "./state/AppState";
@@ -16,9 +17,12 @@ export default function App() {
 }
 
 function AppShell() {
-  const { state, resetDemo } = useAppState();
+  const { state, resetDemo, persistenceNotice } = useAppState();
   const [screen, setScreen] = useState<ScreenId>("overview");
   const [reminderInvoiceId, setReminderInvoiceId] = useState<string | null>(null);
+  // Dismissal is keyed by the notice text, so a different notice later is shown again.
+  const [dismissedNotice, setDismissedNotice] = useState<string | null>(null);
+  const visibleNotice = persistenceNotice !== null && persistenceNotice !== dismissedNotice ? persistenceNotice : null;
 
   // On demo reset, return to Overview and close any open reminder drawer.
   // Setting these to their current values on first mount is a no-op.
@@ -31,6 +35,9 @@ function AppShell() {
     <div className="flex min-h-screen bg-[#faf9f6]">
       <Sidebar active={screen} onNavigate={setScreen} onResetDemo={resetDemo} />
       <main className="flex-1 min-w-0 px-4 pb-8 pt-20 md:p-8">
+        {visibleNotice !== null && (
+          <PersistenceNotice message={visibleNotice} onDismiss={() => setDismissedNotice(visibleNotice)} />
+        )}
         {/* Keyed by resetCount so local screen state (filters, What-If inputs, etc.) remounts on reset. */}
         <div key={state.resetCount}>
           {renderScreen(screen, setReminderInvoiceId, setScreen)}
