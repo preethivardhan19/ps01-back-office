@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sidebar, { type ScreenId } from "./components/Sidebar";
+import Invoices from "./screens/Invoices";
 import Overview from "./screens/Overview";
 import Placeholder from "./screens/Placeholder";
 
@@ -19,7 +20,7 @@ function renderScreen(screen: ScreenId) {
     case "overview":
       return <Overview />;
     case "invoices":
-      return <Placeholder title="Invoices" />;
+      return <Invoices />;
     case "forecast":
       return <Placeholder title="Cash Forecast" />;
     case "bills":
