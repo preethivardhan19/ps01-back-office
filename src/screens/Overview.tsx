@@ -1,7 +1,9 @@
 import { useState } from "react";
+import AlertsPanel from "../components/AlertsPanel";
 import StatCard from "../components/StatCard";
 import { TODAY, bills, cashAccounts, clients, invoices } from "../data/seed";
 import type { Invoice, InvoiceStatus } from "../types";
+import { buildAlerts } from "../utils/alerts";
 import { addDays, daysBetween, formatDate, formatINR } from "../utils/format";
 
 type FilterTab = "all" | "overdue" | "sent" | "draft";
@@ -47,8 +49,15 @@ function daysOverdue(invoice: Invoice): number {
   return invoice.dueDate < TODAY ? daysBetween(invoice.dueDate, TODAY) : 0;
 }
 
-export default function Overview() {
+export default function Overview({
+  onOpenInvoice,
+  onOpenForecast,
+}: {
+  onOpenInvoice?: (invoiceId: string) => void;
+  onOpenForecast?: () => void;
+} = {}) {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const alerts = buildAlerts({ today: TODAY, invoices, bills, clients, cashAccounts });
 
   const dueSoonEnd = addDays(TODAY, DUE_SOON_DAYS);
   const billsEnd = addDays(TODAY, BILLS_WINDOW_DAYS);
@@ -74,6 +83,12 @@ export default function Overview() {
   return (
     <section className="space-y-8">
       <h1 className="text-2xl font-semibold text-slate-900">Overview</h1>
+
+      <AlertsPanel
+        alerts={alerts}
+        onOpenInvoice={(id) => onOpenInvoice?.(id)}
+        onOpenForecast={() => onOpenForecast?.()}
+      />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
