@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ForecastChart from "../components/ForecastChart";
 import WhatIfSimulator from "../components/WhatIfSimulator";
-import { bills, cashAccounts, invoices } from "../data/seed";
+import { useAppState } from "../state/AppState";
 import { calculateCashForecast, type HorizonDays } from "../utils/cashForecast";
 import { formatDate, formatINR } from "../utils/format";
 import { firstShortfall, simulateForecast } from "../utils/whatIfForecast";
@@ -10,6 +10,8 @@ const HORIZONS: HorizonDays[] = [30, 60, 90];
 
 export default function CashForecast() {
   const [horizon, setHorizon] = useState<HorizonDays>(30);
+  const { state } = useAppState();
+  const { bills, cashAccounts, invoices } = state;
 
   const currentCash = cashAccounts.reduce((total, account) => total + account.balanceINR, 0);
   const forecast = calculateCashForecast(currentCash, invoices, bills, horizon);
@@ -51,11 +53,11 @@ export default function CashForecast() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Opening cash</p>
+          <p className="text-sm text-slate-500">Confirmed cash (today)</p>
           <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-900">{formatINR(currentCash)}</p>
         </div>
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Lowest projected balance</p>
+          <p className="text-sm text-slate-500">Projected cash: lowest balance</p>
           <p
             className={`mt-2 text-2xl font-semibold tabular-nums ${
               forecast.lowestBalanceINR < 0 ? "text-red-700" : "text-slate-900"
@@ -65,12 +67,14 @@ export default function CashForecast() {
           </p>
         </div>
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">First negative date</p>
+          <p className="text-sm text-slate-500">Projected cash: first negative date</p>
           <p className="mt-2 text-2xl font-semibold text-slate-900">
             {forecast.firstNegativeDate === null ? "None in this horizon" : formatDate(forecast.firstNegativeDate)}
           </p>
         </div>
       </div>
+
+      <p className="-mt-4 text-sm text-slate-500">Projected cash excludes bills already paid, so no bill is counted twice.</p>
 
       <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
         <ForecastChart days={forecast.days} simulatedDays={simulated.days} />

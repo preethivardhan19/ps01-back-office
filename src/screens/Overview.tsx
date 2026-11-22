@@ -1,10 +1,11 @@
 import { useState } from "react";
 import AlertsPanel from "../components/AlertsPanel";
 import StatCard from "../components/StatCard";
-import { TODAY, bills, cashAccounts, clients, invoices } from "../data/seed";
+import { TODAY, clients } from "../data/seed";
 import type { Invoice, InvoiceStatus } from "../types";
 import { buildAlerts } from "../utils/alerts";
 import { addDays, daysBetween, formatDate, formatINR } from "../utils/format";
+import { useAppState } from "../state/AppState";
 
 type FilterTab = "all" | "overdue" | "sent" | "draft";
 
@@ -57,6 +58,8 @@ export default function Overview({
   onOpenForecast?: () => void;
 } = {}) {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const { state } = useAppState();
+  const { bills, cashAccounts, invoices } = state;
   const alerts = buildAlerts({ today: TODAY, invoices, bills, clients, cashAccounts });
 
   const dueSoonEnd = addDays(TODAY, DUE_SOON_DAYS);
@@ -92,7 +95,7 @@ export default function Overview({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          label="Current Cash"
+          label="Confirmed cash"
           value={formatINR(currentCash)}
           subtitle={`Sum of ${cashAccounts.length} cash account balances`}
         />

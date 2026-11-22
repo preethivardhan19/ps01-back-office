@@ -17,11 +17,31 @@ const NAV_ITEMS: NavItem[] = [
 interface SidebarProps {
   active: ScreenId;
   onNavigate: (id: ScreenId) => void;
+  onResetDemo?: () => void;
 }
 
 const MOBILE_MENU_ID = "mobile-nav-menu";
 
-export default function Sidebar({ active, onNavigate }: SidebarProps) {
+const RESET_CONFIRM_MESSAGE =
+  "Reset all demo data to the original seed values? Bills and payments you added will be removed.";
+
+function ResetDemoButton({ onResetDemo, className }: { onResetDemo?: () => void; className: string }) {
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={() => {
+        if (window.confirm(RESET_CONFIRM_MESSAGE)) {
+          onResetDemo?.();
+        }
+      }}
+    >
+      Reset Demo Data
+    </button>
+  );
+}
+
+export default function Sidebar({ active, onNavigate, onResetDemo }: SidebarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -79,6 +99,10 @@ export default function Sidebar({ active, onNavigate }: SidebarProps) {
                 </button>
               );
             })}
+            <ResetDemoButton
+              onResetDemo={onResetDemo}
+              className="mt-2 min-h-11 px-3 py-3 text-left text-xs text-slate-500 underline-offset-2 hover:underline"
+            />
           </nav>
         )}
       </div>
@@ -108,6 +132,12 @@ export default function Sidebar({ active, onNavigate }: SidebarProps) {
             );
           })}
         </nav>
+        <div className="mt-auto px-3 pb-6 pt-6">
+          <ResetDemoButton
+            onResetDemo={onResetDemo}
+            className="px-3 py-2 text-left text-xs text-slate-500 underline-offset-2 hover:underline"
+          />
+        </div>
       </aside>
     </>
   );

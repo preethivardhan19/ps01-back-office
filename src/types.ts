@@ -43,6 +43,18 @@ export interface Bill {
   dueDate: string;
   status: BillStatus;
   recurrence: Recurrence;
+  /** Original recurrence anchor date; absent on seed bills. */
+  anchorDate?: string;
+}
+
+export interface BillPayment {
+  id: string;
+  billId: string;
+  accountId: string;
+  amountINR: number;
+  paidDate: string;
+  /** Due date of the single occurrence that was settled. */
+  occurrenceDueDate: string;
 }
 
 export interface CashAccount {

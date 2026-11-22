@@ -60,9 +60,12 @@ function occurrenceOn(dueDate: string, monthsAhead: number): string {
  */
 function billDates(bill: Bill, startDate: string, endDate: string): string[] {
   const step = STEP_MONTHS[bill.recurrence];
-  const [dueYear, dueMonth] = bill.dueDate.split("-").map(Number);
+  // Occurrences are generated from the ORIGINAL anchor so month-end days do not drift after payments.
+  // Without an anchor (seed bills) the anchor is dueDate, so behaviour is unchanged.
+  const anchorDate = bill.anchorDate ?? bill.dueDate;
+  const [anchorYear, anchorMonth] = anchorDate.split("-").map(Number);
   const [startYear, startMonth] = startDate.split("-").map(Number);
-  const monthsElapsed = (startYear - dueYear) * 12 + (startMonth - dueMonth);
+  const monthsElapsed = (startYear - anchorYear) * 12 + (startMonth - anchorMonth);
   // Begin one step before the first possibly-relevant occurrence so the latest past one is seen.
   const firstIndex = step > 0 ? Math.max(0, Math.floor(monthsElapsed / step) - 1) : 0;
 
@@ -70,8 +73,10 @@ function billDates(bill: Bill, startDate: string, endDate: string): string[] {
   let latestPast: string | null = null;
   // One-time bills (step 0) produce only occurrence 0.
   for (let index = firstIndex; step > 0 || index === 0; index++) {
-    const date = occurrenceOn(bill.dueDate, index * step);
+    const date = occurrenceOn(anchorDate, index * step);
     if (date > endDate) break;
+    // Occurrences before the current dueDate were already settled (their cash is in the balance); never re-count them.
+    if (date < bill.dueDate) continue;
     if (date < startDate) {
       latestPast = date;
     } else {
