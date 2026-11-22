@@ -76,7 +76,7 @@ export default function Sidebar({ active, onNavigate, onResetDemo }: SidebarProp
         {menuOpen && (
           <nav
             id={MOBILE_MENU_ID}
-            className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-slate-200 bg-white px-3 pb-3 shadow-sm"
+            className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-slate-200 bg-white px-3 pb-3"
           >
             {NAV_ITEMS.map((item) => {
               const isActive = item.id === active;
@@ -91,7 +91,7 @@ export default function Sidebar({ active, onNavigate, onResetDemo }: SidebarProp
                   aria-current={isActive ? "page" : undefined}
                   className={
                     isActive
-                      ? "flex min-h-11 items-center rounded-md bg-slate-900 px-3 py-3 text-left text-sm font-medium text-white"
+                      ? "flex min-h-11 items-center rounded-md bg-indigo-600 px-3 py-3 text-left text-sm font-medium text-white"
                       : "flex min-h-11 items-center rounded-md px-3 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-100"
                   }
                 >
@@ -123,7 +123,7 @@ export default function Sidebar({ active, onNavigate, onResetDemo }: SidebarProp
                 aria-current={isActive ? "page" : undefined}
                 className={
                   isActive
-                    ? "rounded-md bg-slate-900 px-3 py-2 text-left text-sm font-medium text-white"
+                    ? "rounded-md bg-indigo-600 px-3 py-2 text-left text-sm font-medium text-white"
                     : "rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100"
                 }
               >

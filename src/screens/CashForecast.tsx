@@ -68,7 +68,7 @@ export default function CashForecast() {
         </div>
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Projected cash: first negative date</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">
+          <p className="mt-2 text-2xl font-semibold tabular-nums text-slate-900">
             {forecast.firstNegativeDate === null ? "None in this horizon" : formatDate(forecast.firstNegativeDate)}
           </p>
         </div>
@@ -97,9 +97,9 @@ export default function CashForecast() {
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-5 py-3 font-medium">Date</th>
-                <th className="px-5 py-3 font-medium">Description</th>
-                <th className="px-5 py-3 font-medium">Type</th>
+                <th className="px-5 py-3 text-left font-medium">Date</th>
+                <th className="px-5 py-3 text-left font-medium">Description</th>
+                <th className="px-5 py-3 text-left font-medium">Type</th>
                 <th className="px-5 py-3 text-right font-medium">Amount</th>
               </tr>
             </thead>
@@ -107,10 +107,10 @@ export default function CashForecast() {
               {forecast.events.map((event) => {
                 const isIn = event.direction === "in";
                 return (
-                  <tr key={`${event.sourceId}-${event.date}`} className="text-slate-700">
-                    <td className="px-5 py-3">{formatDate(event.date)}</td>
-                    <td className="px-5 py-3 font-medium text-slate-900">{event.description}</td>
-                    <td className="px-5 py-3">{isIn ? "Invoice payment" : "Bill"}</td>
+                  <tr key={`${event.sourceId}-${event.date}`} className="text-slate-700 transition-colors hover:bg-slate-50">
+                    <td className="px-5 py-3 text-left tabular-nums">{formatDate(event.date)}</td>
+                    <td className="px-5 py-3 text-left font-medium text-slate-900">{event.description}</td>
+                    <td className="px-5 py-3 text-left">{isIn ? "Invoice payment" : "Bill"}</td>
                     <td
                       className={`px-5 py-3 text-right tabular-nums ${isIn ? "text-emerald-700" : "text-red-700"}`}
                     >
@@ -121,7 +121,7 @@ export default function CashForecast() {
                 );
               })}
               {forecast.events.length === 0 ? (
-                <tr>
+                <tr className="transition-colors hover:bg-slate-50">
                   <td colSpan={4} className="px-5 py-8 text-center text-slate-500">
                     No cash events in this horizon.
                   </td>

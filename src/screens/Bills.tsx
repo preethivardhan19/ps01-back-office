@@ -16,9 +16,9 @@ const RECURRENCE_LABELS: Record<Recurrence, string> = {
 };
 
 const STATUS_STYLES: Record<BillStatus, string> = {
-  upcoming: "bg-blue-100 text-blue-800",
-  overdue: "bg-red-100 text-red-800",
-  paid: "bg-emerald-100 text-emerald-800",
+  upcoming: "text-blue-800",
+  overdue: "text-red-800",
+  paid: "text-emerald-800",
 };
 
 function statusLabel(status: BillStatus): string {
@@ -226,14 +226,14 @@ export default function Bills() {
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="break-words font-medium text-slate-900">{bill.name}</span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[bill.status]}`}>
+                  <span className={`text-xs font-medium ${STATUS_STYLES[bill.status]}`}>
                     {statusLabel(bill.status)}
                   </span>
                 </div>
                 <p className="break-words text-sm text-slate-500">
                   {bill.category} · {RECURRENCE_LABELS[bill.recurrence]}
                 </p>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm tabular-nums text-slate-700">
                   <span className="tabular-nums">{formatINR(bill.amountINR)}</span> · Due {formatDate(bill.dueDate)}
                 </p>
                 {payErrorBillId === bill.id ? (

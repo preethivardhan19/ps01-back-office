@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+/* Flat alabaster canvas: no gradients, glows, or neon effects. */
+html,
+body {
+  background-color: #faf9f6;
+  color: #0f172a;
+}

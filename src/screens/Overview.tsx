@@ -25,10 +25,10 @@ const DUE_SOON_DAYS = 14;
 const BILLS_WINDOW_DAYS = 30;
 
 const STATUS_STYLES: Record<InvoiceStatus, string> = {
-  draft: "bg-slate-100 text-slate-700",
-  sent: "bg-blue-100 text-blue-800",
-  overdue: "bg-red-100 text-red-800",
-  paid: "bg-emerald-100 text-emerald-800",
+  draft: "text-slate-700",
+  sent: "text-blue-800",
+  overdue: "text-red-800",
+  paid: "text-emerald-800",
 };
 
 const STATUS_LABELS: Record<InvoiceStatus, string> = {
@@ -146,31 +146,31 @@ export default function Overview({
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-5 py-3 font-medium">Client</th>
-                <th className="px-5 py-3 font-medium">Invoice</th>
+                <th className="px-5 py-3 text-left font-medium">Client</th>
+                <th className="px-5 py-3 text-left font-medium">Invoice</th>
                 <th className="px-5 py-3 text-right font-medium">Amount</th>
-                <th className="px-5 py-3 font-medium">Due Date</th>
+                <th className="px-5 py-3 text-left font-medium">Due Date</th>
                 <th className="px-5 py-3 text-right font-medium">Days Overdue</th>
-                <th className="px-5 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 text-left font-medium">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {rows.map((invoice) => {
                 const late = daysOverdue(invoice);
                 return (
-                  <tr key={invoice.id} className="text-slate-700">
-                    <td className="px-5 py-3 font-medium text-slate-900">{clientName(invoice.clientId)}</td>
-                    <td className="px-5 py-3">
+                  <tr key={invoice.id} className="text-slate-700 transition-colors hover:bg-slate-50">
+                    <td className="px-5 py-3 text-left font-medium text-slate-900">{clientName(invoice.clientId)}</td>
+                    <td className="px-5 py-3 text-left">
                       <span className="block">{invoice.id}</span>
                       <span className="block text-xs text-slate-500">{invoice.description}</span>
                     </td>
                     <td className="px-5 py-3 text-right tabular-nums">{formatINR(invoice.amountINR)}</td>
-                    <td className="px-5 py-3">{formatDate(invoice.dueDate)}</td>
+                    <td className="px-5 py-3 text-left tabular-nums">{formatDate(invoice.dueDate)}</td>
                     <td className={`px-5 py-3 text-right tabular-nums ${late > 0 ? "text-red-700" : ""}`}>
                       {late}
                     </td>
-                    <td className="px-5 py-3">
-                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[invoice.status]}`}>
+                    <td className="px-5 py-3 text-left">
+                      <span className={`text-xs font-medium ${STATUS_STYLES[invoice.status]}`}>
                         {STATUS_LABELS[invoice.status]}
                       </span>
                     </td>
@@ -178,7 +178,7 @@ export default function Overview({
                 );
               })}
               {rows.length === 0 ? (
-                <tr>
+                <tr className="transition-colors hover:bg-slate-50">
                   <td colSpan={6} className="px-5 py-8 text-center text-slate-500">
                     No invoices in this view.
                   </td>

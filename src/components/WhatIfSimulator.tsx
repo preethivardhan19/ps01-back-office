@@ -66,13 +66,13 @@ export default function WhatIfSimulator({
       <h2 className="text-lg font-semibold text-slate-900">What-If Simulator</h2>
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <label className="flex flex-col gap-1 text-sm text-slate-600">
+        <label className="flex flex-col gap-1 text-sm text-slate-500">
           Invoice
           <select
             value={hasInvoices ? selectedId : ""}
             disabled={!hasInvoices}
             onChange={(event) => setSelectedId(event.target.value)}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900"
+            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm tabular-nums text-slate-900"
           >
             {hasInvoices ? (
               eligible.map((invoice) => (
@@ -86,7 +86,7 @@ export default function WhatIfSimulator({
           </select>
         </label>
 
-        <div className="flex flex-col gap-1 text-sm text-slate-600">
+        <div className="flex flex-col gap-1 text-sm text-slate-500">
           <span>
             Delay: <span className="font-medium tabular-nums text-slate-900">{selectedDelay} days</span>
           </span>
@@ -133,8 +133,8 @@ export default function WhatIfSimulator({
 
       {shortfall !== null && (
         <div className="mt-4 text-sm font-medium text-red-700">
-          <p>{`Cash goes negative on ${formatDate(shortfall.date)}`}</p>
-          <p>{`Shortfall: \u2212${formatINR(shortfall.shortfallINR)}`}</p>
+          <p className="tabular-nums">{`Cash goes negative on ${formatDate(shortfall.date)}`}</p>
+          <p className="tabular-nums">{`Shortfall: \u2212${formatINR(shortfall.shortfallINR)}`}</p>
         </div>
       )}
     </div>

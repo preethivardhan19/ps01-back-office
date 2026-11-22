@@ -78,14 +78,14 @@ export default function Invoices() {
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-5 py-3 font-medium">Invoice</th>
-                <th className="px-5 py-3 font-medium">Client</th>
+                <th className="px-5 py-3 text-left font-medium">Invoice</th>
+                <th className="px-5 py-3 text-left font-medium">Client</th>
                 <th className="px-5 py-3 text-right font-medium">Amount</th>
-                <th className="px-5 py-3 font-medium">Issue Date</th>
-                <th className="px-5 py-3 font-medium">Due Date</th>
+                <th className="px-5 py-3 text-left font-medium">Issue Date</th>
+                <th className="px-5 py-3 text-left font-medium">Due Date</th>
                 <th className="px-5 py-3 text-right font-medium">Days Overdue</th>
-                <th className="px-5 py-3 font-medium">Status</th>
-                <th className="px-5 py-3 font-medium">Reminder</th>
+                <th className="px-5 py-3 text-left font-medium">Status</th>
+                <th className="px-5 py-3 text-left font-medium">Reminder</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -97,25 +97,25 @@ export default function Invoices() {
                   <tr
                     key={invoice.id}
                     onClick={() => setSelectedId(invoice.id)}
-                    className={`cursor-pointer text-slate-700 ${isSelected ? "bg-slate-50" : ""}`}
+                    className={`cursor-pointer text-slate-700 transition-colors hover:bg-slate-50 ${isSelected ? "bg-slate-50" : ""}`}
                   >
-                    <td className="px-5 py-3">
+                    <td className="px-5 py-3 text-left">
                       <span className="block font-medium text-slate-900">{invoice.id}</span>
                       <span className="block text-xs text-slate-500">{invoice.description}</span>
                     </td>
-                    <td className="px-5 py-3">{clientName(invoice.clientId)}</td>
+                    <td className="px-5 py-3 text-left">{clientName(invoice.clientId)}</td>
                     <td className="px-5 py-3 text-right tabular-nums">{formatINR(invoice.amountINR)}</td>
-                    <td className="px-5 py-3">{formatDate(invoice.issueDate)}</td>
-                    <td className="px-5 py-3">{formatDate(invoice.dueDate)}</td>
+                    <td className="px-5 py-3 text-left tabular-nums">{formatDate(invoice.issueDate)}</td>
+                    <td className="px-5 py-3 text-left tabular-nums">{formatDate(invoice.dueDate)}</td>
                     <td className={`px-5 py-3 text-right tabular-nums ${late > 0 ? "text-red-700" : ""}`}>
                       {late}
                     </td>
-                    <td className="px-5 py-3">
+                    <td className="px-5 py-3 text-left">
                       <StatusBadge status={invoice.status} />
                     </td>
-                    <td className="px-5 py-3">
+                    <td className="px-5 py-3 text-left">
                       {reminder ? (
-                        <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                        <span className="text-xs font-medium text-amber-800">
                           Follow up
                         </span>
                       ) : (
@@ -126,7 +126,7 @@ export default function Invoices() {
                 );
               })}
               {rows.length === 0 ? (
-                <tr>
+                <tr className="transition-colors hover:bg-slate-50">
                   <td colSpan={8} className="px-5 py-8 text-center text-slate-500">
                     No invoices in this view.
                   </td>
@@ -145,17 +145,17 @@ export default function Invoices() {
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-5 py-3 font-medium">Client</th>
-                <th className="px-5 py-3 font-medium">City</th>
+                <th className="px-5 py-3 text-left font-medium">Client</th>
+                <th className="px-5 py-3 text-left font-medium">City</th>
                 <th className="px-5 py-3 text-right font-medium">Unpaid Invoices</th>
                 <th className="px-5 py-3 text-right font-medium">Outstanding</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {balances.map((balance) => (
-                <tr key={balance.client.id} className="text-slate-700">
-                  <td className="px-5 py-3 font-medium text-slate-900">{balance.client.name}</td>
-                  <td className="px-5 py-3">{balance.client.city}</td>
+                <tr key={balance.client.id} className="text-slate-700 transition-colors hover:bg-slate-50">
+                  <td className="px-5 py-3 text-left font-medium text-slate-900">{balance.client.name}</td>
+                  <td className="px-5 py-3 text-left">{balance.client.city}</td>
                   <td className="px-5 py-3 text-right tabular-nums">{balance.invoiceCount}</td>
                   <td className="px-5 py-3 text-right tabular-nums">{formatINR(balance.outstandingINR)}</td>
                 </tr>
@@ -178,7 +178,7 @@ export default function Invoices() {
             <ul className="divide-y divide-slate-100">
               {selectedFollowUps.map((followUp) => (
                 <li key={followUp.id} className="py-3 text-slate-700">
-                  <span className="font-medium text-slate-900">{formatDate(followUp.date)}</span>
+                  <span className="font-medium tabular-nums text-slate-900">{formatDate(followUp.date)}</span>
                   <span className="ml-3 text-xs capitalize text-slate-500">{followUp.channel}</span>
                   <p className="mt-1">{followUp.note}</p>
                 </li>

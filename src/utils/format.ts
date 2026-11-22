@@ -1,22 +1,11 @@
 const MS_PER_DAY = 86_400_000;
 
 /**
- * Formats an INR amount with ₹ and Indian digit grouping.
- * e.g. 1250000 -> "₹12,50,000", 125000 -> "₹1,25,000", -4500 -> "-₹4,500"
+ * Formats an INR amount as whole rupees with Indian digit grouping,
+ * e.g. 1250000 -> "₹12,50,000", -4500 -> "-₹4,500".
  */
 export function formatINR(amount: number): string {
-  const sign = amount < 0 ? "-" : "";
-  const whole = Math.round(Math.abs(amount)).toString();
-
-  if (whole.length <= 3) {
-    return `${sign}₹${whole}`;
-  }
-
-  const last3 = whole.slice(-3);
-  const head = whole.slice(0, -3);
-  // Group the leading digits in pairs, e.g. "1250" -> "12,50".
-  const grouped = head.replace(/\B(?=(\d{2})+(?!\d))/g, ",");
-  return `${sign}₹${grouped},${last3}`;
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
 }
 
 /** Whole calendar days from `from` to `to` (both "YYYY-MM-DD"). Negative if `to` is earlier. */

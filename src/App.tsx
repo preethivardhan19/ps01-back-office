@@ -28,7 +28,7 @@ function AppShell() {
   }, [state.resetCount]);
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-[#faf9f6]">
       <Sidebar active={screen} onNavigate={setScreen} onResetDemo={resetDemo} />
       <main className="flex-1 min-w-0 px-4 pb-8 pt-20 md:p-8">
         {/* Keyed by resetCount so local screen state (filters, What-If inputs, etc.) remounts on reset. */}

@@ -14,10 +14,10 @@ const PRIORITY_LABEL: Record<AlertPriority, string> = {
 };
 
 const PRIORITY_CLASS: Record<AlertPriority, string> = {
-  critical: "bg-red-100 text-red-800",
-  high: "bg-orange-100 text-orange-800",
-  medium: "bg-amber-100 text-amber-800",
-  low: "bg-slate-100 text-slate-700",
+  critical: "text-red-800",
+  high: "text-orange-800",
+  medium: "text-amber-800",
+  low: "text-slate-900",
 };
 
 export default function AlertsPanel({ alerts, onOpenInvoice, onOpenForecast }: AlertsPanelProps) {
@@ -25,7 +25,7 @@ export default function AlertsPanel({ alerts, onOpenInvoice, onOpenForecast }: A
     <section className="min-w-0 rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4">
         <h2 className="text-lg font-semibold text-slate-900">Alerts</h2>
-        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
+        <span className="text-xs font-medium text-slate-900">
           {alerts.length}
         </span>
       </div>
@@ -43,14 +43,12 @@ export default function AlertsPanel({ alerts, onOpenInvoice, onOpenForecast }: A
           {alerts.map((alert) => (
             <li key={alert.id} className="min-w-0 px-5 py-4">
               <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${PRIORITY_CLASS[alert.priority]}`}
-                >
+                <span className={`text-xs font-medium ${PRIORITY_CLASS[alert.priority]}`}>
                   {PRIORITY_LABEL[alert.priority]}
                 </span>
                 <h3 className="min-w-0 break-words text-sm font-semibold text-slate-900">{alert.title}</h3>
               </div>
-              <p className="mt-2 break-words text-sm text-slate-700">{alert.message}</p>
+              <p className="mt-2 break-words text-sm tabular-nums text-slate-900">{alert.message}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <button
                   type="button"

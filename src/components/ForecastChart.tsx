@@ -126,7 +126,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
                 x={negativePoint.x}
                 y={labelBelow ? negativePoint.y + 16 : negativePoint.y - 22}
                 textAnchor={labelAnchor}
-                className="fill-red-700 text-[11px] font-medium"
+                className="fill-red-700 text-[11px] font-medium tabular-nums"
               >
                 {formatDate(negativeDay.date)}
               </text>
@@ -134,7 +134,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
                 x={negativePoint.x}
                 y={labelBelow ? negativePoint.y + 28 : negativePoint.y - 10}
                 textAnchor={labelAnchor}
-                className="fill-red-700 text-[11px] font-medium"
+                className="fill-red-700 text-[11px] font-medium tabular-nums"
               >
                 {`\u2212${formatINR(Math.abs(negativeDay.balanceINR))}`}
               </text>
@@ -142,7 +142,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
           )}
           {/* Legend */}
           <line x1={PAD.left + 8} x2={PAD.left + 28} y1={PAD.top + 8} y2={PAD.top + 8} className="stroke-sky-700" strokeWidth={2} />
-          <text x={PAD.left + 34} y={PAD.top + 12} className="fill-slate-600 text-[11px]">
+          <text x={PAD.left + 34} y={PAD.top + 12} className="fill-slate-500 text-[11px]">
             Baseline
           </text>
           <line
@@ -154,7 +154,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
             strokeWidth={2}
             strokeDasharray="6 4"
           />
-          <text x={PAD.left + 130} y={PAD.top + 12} className="fill-slate-600 text-[11px]">
+          <text x={PAD.left + 130} y={PAD.top + 12} className="fill-slate-500 text-[11px]">
             What-if
           </text>
         </>
@@ -169,7 +169,12 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
         strokeWidth={2}
         strokeDasharray="6 4"
       />
-      <text x={PAD.left + PLOT_W - 4} y={zeroY - 6} textAnchor="end" className="fill-red-700 text-[11px] font-medium">
+      <text
+        x={PAD.left + PLOT_W - 4}
+        y={zeroY - 6}
+        textAnchor="end"
+        className="fill-red-700 text-[11px] font-medium tabular-nums"
+      >
         ₹0 danger line
       </text>
 
@@ -179,7 +184,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
           x={PAD.left - 8}
           y={yAt(tick) + 4}
           textAnchor="end"
-          className="fill-slate-500 text-[11px]"
+          className="fill-slate-500 text-[11px] tabular-nums"
         >
           {formatINR(tick)}
         </text>
@@ -191,7 +196,7 @@ export default function ForecastChart({ days, simulatedDays }: ForecastChartProp
           x={xAt(index)}
           y={HEIGHT - 8}
           textAnchor={index === 0 ? "start" : index === days.length - 1 ? "end" : "middle"}
-          className="fill-slate-500 text-[11px]"
+          className="fill-slate-500 text-[11px] tabular-nums"
         >
           {formatDate(days[index].date)}
         </text>
