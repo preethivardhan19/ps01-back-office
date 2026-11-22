@@ -1,8 +1,10 @@
 import { useState } from "react";
 import ForecastChart from "../components/ForecastChart";
+import WhatIfSimulator from "../components/WhatIfSimulator";
 import { bills, cashAccounts, invoices } from "../data/seed";
 import { calculateCashForecast, type HorizonDays } from "../utils/cashForecast";
 import { formatDate, formatINR } from "../utils/format";
+import { firstShortfall, simulateForecast } from "../utils/whatIfForecast";
 
 const HORIZONS: HorizonDays[] = [30, 60, 90];
 
@@ -11,6 +13,9 @@ export default function CashForecast() {
 
   const currentCash = cashAccounts.reduce((total, account) => total + account.balanceINR, 0);
   const forecast = calculateCashForecast(currentCash, invoices, bills, horizon);
+  const [delays, setDelays] = useState<Record<string, number>>({});
+  const simulated = simulateForecast(currentCash, invoices, bills, horizon, delays);
+  const shortfall = firstShortfall(simulated);
 
   return (
     <section className="space-y-8">
@@ -68,8 +73,16 @@ export default function CashForecast() {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-        <ForecastChart days={forecast.days} />
+        <ForecastChart days={forecast.days} simulatedDays={simulated.days} />
       </div>
+
+      <WhatIfSimulator
+        invoices={invoices}
+        delays={delays}
+        onDelaysChange={setDelays}
+        onReset={() => setDelays({})}
+        shortfall={shortfall}
+      />
 
       <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 px-5 py-4">
