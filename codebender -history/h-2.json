@@ -1,0 +1,799 @@
+{
+  "schema": 1,
+  "sessionId": "e467aeeb-5532-4418-aaf7-459407b49f0e",
+  "repoId": "ps01-back-office",
+  "branch": "master",
+  "createdAt": 1795254925226,
+  "updatedAt": 1795272253563,
+  "title": "Read our mini-spec. Build Slice 1 only: create the clean workspace shell with…",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Read our mini-spec. Build Slice 1 only: create the clean workspace shell with sidebar navigation (Overview, Invoices, Cash Forecast, Bills) and a realistic seeded dataset for an Indian solo freelance designer (in INR ₹). On the Overview screen, render the KPI summary row (Current Cash, Total Overdue, Due Next 14 Days, Upcoming Bills) and the \"Who Owes Me\" table showing Client, Invoice, Amount, Due Date, Days Overdue, and Status filter tabs. Do not build the forecast chart or what-if simulator yet.",
+      "timestamp": 1795255577744
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "timestamp": 1795255585250,
+      "interim": true,
+      "toolCalls": [
+        {
+          "id": "2150a443-9673-413a-91e2-3a6f29b004ee",
+          "name": "find_files",
+          "args": {
+            "pattern": "*spec*",
+            "directory": "."
+          },
+          "result": "No files found"
+        },
+        {
+          "id": "817b24b1-e75d-4e7e-b405-8ffbdf497c1d",
+          "name": "list_files",
+          "args": {
+            "directory": ".",
+            "recursive": false
+          },
+          "result": ".codebenders/\nindex.html\npackage-lock.json\npackage.json\nPROJECT_SPEC.md\nsrc/\ntsconfig.json\nvite.config.ts"
+        },
+        {
+          "id": "0a27194b-9a57-4bac-8c19-4fea9bfdef21",
+          "name": "get_project_config",
+          "args": {
+            "directory": "."
+          },
+          "result": "{\"config_file\":\"package.json\",\"language\":\"javascript\",\"name\":\"ps-01-back-office\",\"version\":\"0.0.0\",\"scripts\":{\"dev\":\"vite\",\"build\":\"tsc --noEmit && vite build\",\"preview\":\"vite preview\"},\"dependencies\":[\"react\",\"react-dom\",\"@tailwindcss/vite\",\"@types/react\",\"@types/react-dom\",\"@vitejs/plugin-react\",\"tailwindcss\",\"typescript\",\"vite\"],\"framework\":\"react\"}"
+        },
+        {
+          "id": "9a98c351-0788-4051-bbd4-9dbb255f5649",
+          "name": "read_file",
+          "args": {
+            "file_path": "PROJECT_SPEC.md"
+          },
+          "result": "--- PROJECT_SPEC.md ---\n# PS-01 — The One-Person Back Office\n\nA simple financial back-office web app for a solo Indian freelance designer or home tutor to track invoices, pending payments, upcoming bills and cash flow; identify overdue payments; and forecast cash position over 30–90 days.\n\n## 1. Problem Statement\n\nSolo freelancers struggle to track invoices, pending payments, upcoming bills and cash flow. This leads to missed follow-ups, surprise cash shortfalls, and no clear view of their true financial position.\n\n## 2. Target Users\n\n- Solo Indian freelance designers.\n- Solo Indian home tutors.\n\n## 3. Requirements / Goals\n\n- Show the user's current financial position at a glance.\n- Identify overdue payments and support follow-up.\n- Forecast cash position 30–90 days ahead, including what-if scenarios.\n\n## 4. Screens\n\n- **S1 Overview & Alerts:** total income, pending payments, overdue invoices, available cash, important financial alerts.\n- **S2 Invoices & Follow-Ups:** invoices, clients, amounts (INR), due dates, payment status, follow-up reminders.\n- **S3 30–90 Day Cash Forecast + What-If Simulator:** projected cash flow from synthetic data; simulate delayed payments and additional expenses.\n- **S4 Upcoming Bills:** upcoming expenses, due dates, amounts, payment status.\n\n## 5. Features by Screen\n\n**S1 Overview & Alerts**\n- Summary cards: total income, pending payments, overdue invoice count and value, available cash.\n- Alert list for overdue invoices and bills due soon.\n\n**S2 Invoices & Follow-Ups**\n- Invoice list with client, description, amount (INR), issue and due dates, and status.\n- Filter by status (draft, sent, paid, overdue).\n- Client view showing outstanding balance per client.\n- Follow-up log per invoice (date, channel, note) and reminder indicators.\n\n**S3 Cash Forecast + What-If Simulator**\n- Day-by-day projected cash balance over a selectable 30, 60 or 90 day horizon.\n- Projection built from open invoices (expected payment dates), upcoming bills and current balance.\n- Simulator controls: delay payments by N days for selected invoices; add one-off or recurring expenses; view the revised forecast and minimum balance point.\n\n**S4 Upcoming Bills**\n- Bill list with name, category, amount (INR), due date, recurrence and status (upcoming, paid, overdue).\n- Totals for the next 30 days.\n\n## 6. Data Model (synthetic only)\n\n- **Client:** id, name, type (design | tutoring), city, contact (placeholder).\n- **Invoice:** id, clientId, description, amountINR, issueDate, dueDate, status (draft | sent | paid | overdue), paidDate (optional).\n- **Payment:** id, invoiceId, amountINR, receivedDate.\n- **Bill / Expense:** id, name, category, amountINR, dueDate, status (upcoming | paid | overdue), recurrence.\n- **CashAccount / Balance:** id, label, balanceINR, asOfDate.\n- **FollowUp:** id, invoiceId, date, note, channel.\n\nAll currency is displayed as ₹ INR with Indian digit grouping (e.g. ₹1,25,000).\n\n## 7. Synthetic Data\n\n- Realistic Indian names, Indian cities (e.g. Pune, Bengaluru, Jaipur, Kochi, Chandigarh).\n- Plausible rupee amounts for design work and tutoring fees.\n- No real banking, tax, or personal data.\n- Seed data stored locally in the app.\n\n## 8. Tech Stack\n\n- React + Vite + TypeScript + Tailwind CSS.\n- No backend; local seed data only.\n\n## 9. Scope Limitations (Cut List)\n\nOut of scope:\n- Live bank feeds.\n- GST filing.\n- Live WhatsApp API integration (follow-ups are logged manually).\n- Payment gateway integration.\n- Enterprise features: authentication, multi-user, teams, roles.\n\n## 10. Delivery Plan\n\n- **Slice 0:** Spec and scaffold (this step).\n- **Slice 1 onward:** To be defined after user review of this spec and the scaffold.\n"
+        },
+        {
+          "id": "parent.editor-0ad7a8",
+          "name": "spawn_agent",
+          "args": {
+            "task": "Implement \"Slice 1\" of the PS-01 One-Person Back Office app (React + Vite + TypeScript + Tailwind CSS, no backend). Host OS is Windows. Read PROJECT_SPEC.md sections 4-7 first, then the existing entry files src/main.tsx, src/App.tsx (and any CSS file they import), index.html, and tsconfig.json so you match the existing wiring. Do not change package.json or install anything.\n\nCreate or edit only these files, minimal change:\n- src/types.ts: TypeScript types Client, Invoice (status 'draft'|'sent'|'paid'|'overdue', paidDate optional), Payment, Bill (status 'upcoming'|'paid'|'overdue', recurrence), CashAccount (balanceINR, asOfDate), FollowUp.\n- src/data/seed.ts: export a fixed TODAY date constant and seeded arrays for an Indian solo freelance designer: realistic Indian names, cities (Pune, Bengaluru, Jaipur, Kochi, Chandigarh), rupee amounts for design work and tutoring, synthetic data only. Include at least 6 clients, about 12 invoices with a mix of paid/sent/draft/overdue (several overdue with varied days past due, a few due within the next 14 days of TODAY), a few payments, about 6 bills (some due within 30 days, some paid), 2-3 cash accounts, a few follow-ups. Dates are computed relative to TODAY so the overdue and due-soon status values stay consistent with the dates.\n- src/utils/format.ts: formatINR(amount) returning ₹ with Indian digit grouping (1250000 -> ₹12,50,000), and a daysBetween helper.\n- src/components/Sidebar.tsx: left navigation with four items: Overview, Invoices, Cash Forecast, Bills.\n- src/components/StatCard.tsx: a KPI card (label, value, optional subtitle).\n- src/screens/Overview.tsx: four KPI cards in a row: Current Cash (sum of cash account balances), Total Overdue (count and value of overdue invoices), Due Next 14 Days (value of unpaid invoices due within 14 days of TODAY), Upcoming Bills (value of bills with status 'upcoming' due within 30 days of TODAY; state this definition in the card subtitle). Below, a \"Who Owes Me\" table with columns Client, Invoice, Amount, Due Date, Days Overdue, Status, and status filter tabs: All, Overdue, Sent, Draft. Show only unpaid invoices (exclude paid). Days Overdue = TODAY minus dueDate when past due, otherwise 0. Amounts in formatINR.\n- src/screens/Placeholder.tsx: a simple view with heading and \"Coming in a later slice\" text, used for Invoices, Cash Forecast, Bills.\n- src/App.tsx: shell layout = sidebar + main area; in-state navigation (useState) choosing which screen renders. Keep the existing main.tsx wiring intact.\n\nDo NOT build the forecast chart, the what-if simulator, the invoice list screen, bills list, or any follow-up logging UI. Use Tailwind utility classes only. Keep TypeScript strict-compatible (no unused imports or variables, explicit types where needed).\n\nReturn: the list of files created/changed with relative paths, the tab-to-filter mapping, the Who Owes Me row count, and the KPI definitions. You have no shell, so state that build and type-check were not run.",
+            "agentType": "editor",
+            "depth": 1
+          },
+          "result": "✓ 11 turns · 23 tool calls"
+        },
+        {
+          "id": "7520d6b3-e938-4bcc-be67-7863bc2ae882",
+          "name": "read_file",
+          "args": {
+            "paths": [
+              "PROJECT_SPEC.md",
+              "src/main.tsx",
+              "src/App.tsx",
+              "index.html",
+              "tsconfig.json"
+            ]
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "--- PROJECT_SPEC.md ---\n# PS-01 — The One-Person Back Office\n\nA simple financial back-office web app for a solo Indian freelance designer or home tutor to track invoices, pending payments, upcoming bills and cash flow; identify overdue payments; and forecast cash position over 30–90 days.\n\n## 1. Problem Statement\n\nSolo freelancers struggle to track invoices, pending payments, upcoming bills and cash flow. This leads to missed follow-ups, surprise cash shortfalls, and no clear view of their true financial position.\n\n## 2. Target Users\n\n- Solo Indian freelance designers.\n- Solo Indian home tutors.\n\n## 3. Requirements / Goals\n\n- Show the user's current financial position at a glance.\n- Identify overdue payments and support follow-up.\n- Forecast cash position 30–90 days ahead, including what-if scenarios.\n\n## 4. Screens\n\n- **S1 Overview & Alerts:** total income, pending payments, overdue invoices, available cash, important financial alerts.\n- **S2 Invoices & Follow-Ups:** invoices, clients, amounts (INR), due dates, payment status, follow-up reminders.\n- **S3 30–90 Day Cash Forecast + What-If Simulator:** projected cash flow from synthetic data; simulate delayed payments and additional expenses.\n- **S4 Upcoming Bills:** upcoming expenses, due dates, amounts, payment status.\n\n## 5. Features by Screen\n\n**S1 Overview & Alerts**\n- Summary cards: total income, pending payments, overdue invoice count and value, available cash.\n- Alert list for overdue invoices and bills due soon.\n\n**S2 Invoices & Follow-Ups**\n- Invoice list with client, description, amount (INR), issue and due dates, and status.\n- Filter by status (draft, sent, paid, overdue).\n- Client view showing outstanding balance per client.\n- Follow-up log per invoice (date, channel, note) and reminder indicators.\n\n**S3 Cash Forecast + What-If Simulator**\n- Day-by-day projected cash balance over a selectable 30, 60 or 90 day horizon.\n- Projection built from open invoices (expected payment dates), upcoming bills and current balance.\n- Simulator controls: delay payments by N days for selected invoices; add one-off or recurring expenses; view the revised forecast and minimum balance point.\n\n**S4 Upcoming Bills**\n- Bill list with name, category, amount (INR), due date, recurrence and status (upcoming, paid, overdue).\n- Totals for the next 30 days.\n\n## 6. Data Model (synthetic only)\n\n- **Client:** id, name, type (design | tutoring), city, contact (placeholder).\n- **Invoice:** id, clientId, description, amountINR, issueDate, dueDate, status (draft | sent | paid | overdue), paidDate (optional).\n- **Payment:** id, invoiceId, amountINR, receivedDate.\n- **Bill / Expense:** id, name, category, amountINR, dueDate, status (upcoming | paid | overdue), recurrence.\n- **CashAccount / Balance:** id, label, balanceINR, asOfDate.\n- **FollowUp:** id, invoiceId, date, note, channel.\n\nAll currency is displayed as ₹ INR with Indian digit grouping (e.g. ₹1,25,000).\n\n## 7. Synthetic Data\n\n- Realistic Indian names, Indian cities (e.g. Pune, Bengaluru, Jaipur, Kochi, Chandigarh).\n- Plausible rupee amounts for design work and tutoring fees.\n- No real banking, tax, or personal data.\n- Seed data stored locally in the app.\n\n## 8. Tech Stack\n\n- React + Vite + TypeScript + Tailwind CSS.\n- No backend; local seed data only.\n\n## 9. Scope Limitations (Cut List)\n\nOut of scope:\n- Live bank feeds.\n- GST filing.\n- Live WhatsApp API integration (follow-ups are logged manually).\n- Payment gateway integration.\n- Enterprise features: authentication, multi-user, teams, roles.\n\n## 10. Delivery Plan\n\n- **Slice 0:** Spec and scaffold (this step).\n- **Slice 1 onward:** To be defined after user review of this spec and the scaffold.\n\n\n--- src\\main.tsx ---\nimport { StrictMode } from \"react\";\nimport { createRoot } from \"react-dom/client\";\nimport \"./index.css\";\nimport App from \"./App\";\n\ncreateRoot(document.getElementById(\"root\")!).render(\n  <StrictMode>\n    <App />\n  </StrictMode>,\n);\n\n\n--- src\\App.tsx ---\nexport default function App() {\n  return (\n    <main className=\"min-h-screen bg-slate-50 p-8\">\n      <h1 className=\"text-2xl font-semibold text-slate-900\">\n        PS-01 — The One-Person Back Office\n      </h1>\n    </main>\n  );\n}\n\n\n--- index.html ---\n<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>PS-01 — The One-Person Back Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n\n\n--- tsconfig.json ---\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\"ES2022\", \"DOM\", \"DOM.Iterable\"],\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"jsx\": \"react-jsx\",\n    \"strict\": true,\n    \"noEmit\": true,\n    \"isolatedModules\": true,\n    \"skipLibCheck\": true,\n    \"noUnusedLocals\": true,\n    \"noUnusedParameters\": true\n  },\n  \"include\": [\"src\"]\n}\n"
+        },
+        {
+          "id": "86d0c915-565c-42c2-afd0-2b9980e51137",
+          "name": "write_file",
+          "args": {
+            "file_path": "src/types.ts",
+            "content": "// Synthetic data model for PS-01 (see PROJECT_SPEC.md section 6).\n// All dates are ISO calendar dates \"YYYY-MM-DD\"; all money is INR as a number.\n\nexport type ClientType = \"design\" | \"tutoring\";\n\nexport interface Client {\n  id: string;\n  name: string;\n  type: ClientType;\n  city: string;\n  contact: string; // placeholder only\n}\n\nexport type InvoiceStatus = \"draft\" | \"sent\" | \"paid\" | \"overdue\";\n\nexport interface Invoice {\n  id: string;\n  clientId: string;\n  description: string;\n  amountINR: number;\n  issueDate: string;\n  dueDate: string;\n  status: InvoiceStatus;\n  paidDate?: string;\n}\n\nexport interface Payment {\n  id: string;\n  invoiceId: string;\n  amountINR: number;\n  receivedDate: string;\n}\n\nexport type BillStatus = \"upcoming\" | \"paid\" | \"overdue\";\n\nexport type Recurrence = \"one-time\" | \"monthly\" | \"quarterly\" | \"yearly\";\n\nexport interface Bill {\n  id: string;\n  name: string;\n  category: string;\n  amountINR: number;\n  dueDate: string;\n  status: BillStatus;\n  recurrence: Recurrence;\n}\n\nexport interface CashAccount {\n  id: string;\n  label: string;\n  balanceINR: number;\n  asOfDate: string;\n}\n\nexport type FollowUpChannel = \"email\" | \"whatsapp\" | \"phone\" | \"in-person\";\n\nexport interface FollowUp {\n  id: string;\n  invoiceId: string;\n  date: string;\n  note: string;\n  channel: FollowUpChannel;\n}\n"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\types.ts"
+        },
+        {
+          "id": "f0d2229a-c849-40d0-a19c-a16893689b9b",
+          "name": "write_file",
+          "args": {
+            "file_path": "src/utils/format.ts",
+            "content": "const MS_PER_DAY = 86_400_000;\n\n/**\n * Formats an INR amount with ₹ and Indian digit grouping.\n * e.g. 1250000 -> \"₹12,50,000\", 125000 -> \"₹1,25,000\", -4500 -> \"-₹4,500\"\n */\nexport function formatINR(amount: number): string {\n  const sign = amount < 0 ? \"-\" : \"\";\n  const whole = Math.round(Math.abs(amount)).toString();\n\n  if (whole.length <= 3) {\n    return `${sign}₹${whole}`;\n  }\n\n  const last3 = whole.slice(-3);\n  const head = whole.slice(0, -3);\n  // Group the leading digits in pairs, e.g. \"1250\" -> \"12,50\".\n  const grouped = head.replace(/\\B(?=(\\d{2})+(?!\\d))/g, \",\");\n  return `${sign}₹${grouped},${last3}`;\n}\n\n/** Whole calendar days from `from` to `to` (both \"YYYY-MM-DD\"). Negative if `to` is earlier. */\nexport function daysBetween(from: string, to: string): number {\n  const start = Date.parse(`${from}T00:00:00Z`);\n  const end = Date.parse(`${to}T00:00:00Z`);\n  return Math.round((end - start) / MS_PER_DAY);\n}\n\n/** Adds a number of calendar days to a \"YYYY-MM-DD\" date and returns \"YYYY-MM-DD\". */\nexport function addDays(iso: string, days: number): string {\n  const date = new Date(`${iso}T00:00:00Z`);\n  date.setUTCDate(date.getUTCDate() + days);\n  return date.toISOString().slice(0, 10);\n}\n\n/** Formats \"YYYY-MM-DD\" for display, e.g. \"15 Jun 2025\". */\nexport function formatDate(iso: string): string {\n  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(\"en-IN\", {\n    day: \"2-digit\",\n    month: \"short\",\n    year: \"numeric\",\n    timeZone: \"UTC\",\n  });\n}\n"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "ERROR: Parent directory does not exist. Call create_directory first for src\\utils"
+        },
+        {
+          "id": "2d383379-a980-4379-93c9-922fd0cec4ac",
+          "name": "write_file",
+          "args": {
+            "file_path": "src/data/seed.ts",
+            "content": "import type {\n  Bill,\n  CashAccount,\n  Client,\n  FollowUp,\n  Invoice,\n  Payment,\n} from \"../types\";\nimport { addDays } from \"../utils/format\";\n\n// Fixed \"today\" so the demo is stable. Every other date below is relative to it.\nexport const TODAY = \"2025-06-15\";\n\n// Synthetic data only: no real people, banks, or tax identifiers.\n\nexport const clients: Client[] = [\n  { id: \"C-01\", name: \"Kaveri Textiles Pvt Ltd\", type: \"design\", city: \"Jaipur\", contact: \"accounts@kaveri.example.com\" },\n  { id: \"C-02\", name: \"Sunita Kapoor\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-02\" },\n  { id: \"C-03\", name: \"Brightpath Edu Labs\", type: \"design\", city: \"Bengaluru\", contact: \"hello@brightpath.example.com\" },\n  { id: \"C-04\", name: \"Meera Iyer\", type: \"design\", city: \"Bengaluru\", contact: \"placeholder-04\" },\n  { id: \"C-05\", name: \"Vikram Choudhury\", type: \"tutoring\", city: \"Pune\", contact: \"placeholder-05\" },\n  { id: \"C-06\", name: \"Greenleaf Organics\", type: \"design\", city: \"Kochi\", contact: \"ops@greenleaf.example.com\" },\n  { id: \"C-07\", name: \"Priya Sharma\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-07\" },\n];\n\nexport const invoices: Invoice[] = [\n  // Paid\n  { id: \"INV-001\", clientId: \"C-01\", description: \"Packaging label redesign\", amountINR: 85000, issueDate: addDays(TODAY, -60), dueDate: addDays(TODAY, -45), status: \"paid\", paidDate: addDays(TODAY, -40) },\n  { id: \"INV-002\", clientId: \"C-02\", description: \"Class 10 Maths tutoring, May\", amountINR: 24000, issueDate: addDays(TODAY, -50), dueDate: addDays(TODAY, -35), status: \"paid\", paidDate: addDays(TODAY, -36) },\n  { id: \"INV-013\", clientId: \"C-07\", description: \"Weekend art tutoring, April\", amountINR: 16000, issueDate: addDays(TODAY, -45), dueDate: addDays(TODAY, -30), status: \"paid\", paidDate: addDays(TODAY, -32) },\n  // Overdue (status 'overdue' always has dueDate before TODAY)\n  { id: \"INV-003\", clientId: \"C-03\", description: \"Learning app UI kit, phase 2\", amountINR: 185000, issueDate: addDays(TODAY, -75), dueDate: addDays(TODAY, -60), status: \"overdue\" },\n  { id: \"INV-004\", clientId: \"C-04\", description: \"Brand identity: logo and guidelines\", amountINR: 120000, issueDate: addDays(TODAY, -40), dueDate: addDays(TODAY, -25), status: \"overdue\" },\n  { id: \"INV-005\", clientId: \"C-05\", description: \"JEE Physics tutoring, May batch\", amountINR: 18000, issueDate: addDays(TODAY, -30), dueDate: addDays(TODAY, -10), status: \"overdue\" },\n  { id: \"INV-006\", clientId: \"C-06\", description: \"Website landing page design\", amountINR: 96000, issueDate: addDays(TODAY, -20), dueDate: addDays(TODAY, -5), status: \"overdue\" },\n  // Sent, due within the next 14 days\n  { id: \"INV-007\", clientId: \"C-07\", description: \"Weekend art tutoring, June\", amountINR: 16000, issueDate: addDays(TODAY, -10), dueDate: addDays(TODAY, 3), status: \"sent\" },\n  { id: \"INV-008\", clientId: \"C-01\", description: \"Catalogue cover design\", amountINR: 62000, issueDate: addDays(TODAY, -5), dueDate: addDays(TODAY, 9), status: \"sent\" },\n  { id: \"INV-009\", clientId: \"C-04\", description: \"Social media creative pack\", amountINR: 45000, issueDate: addDays(TODAY, -2), dueDate: addDays(TODAY, 12), status: \"sent\" },\n  // Sent, due later\n  { id: \"INV-010\", clientId: \"C-02\", description: \"Class 12 Chemistry tutoring, June\", amountINR: 24000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 20), status: \"sent\" },\n  // Draft\n  { id: \"INV-011\", clientId: \"C-03\", description: \"Onboarding illustration set\", amountINR: 140000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 30), status: \"draft\" },\n  { id: \"INV-012\", clientId: \"C-06\", description: \"Packaging mockups, phase 2\", amountINR: 72000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 25), status: \"draft\" },\n];\n\nexport const payments: Payment[] = [\n  { id: \"P-001\", invoiceId: \"INV-001\", amountINR: 85000, receivedDate: addDays(TODAY, -40) },\n  { id: \"P-002\", invoiceId: \"INV-002\", amountINR: 24000, receivedDate: addDays(TODAY, -36) },\n  { id: \"P-003\", invoiceId: \"INV-013\", amountINR: 16000, receivedDate: addDays(TODAY, -32) },\n];\n\nexport const bills: Bill[] = [\n  { id: \"B-01\", name: \"Co-working desk\", category: \"Workspace\", amountINR: 12000, dueDate: addDays(TODAY, 7), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-02\", name: \"Adobe Creative Cloud\", category: \"Software\", amountINR: 4230, dueDate: addDays(TODAY, 4), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-03\", name: \"Health insurance premium\", category: \"Insurance\", amountINR: 18500, dueDate: addDays(TODAY, 22), status: \"upcoming\", recurrence: \"yearly\" },\n  { id: \"B-04\", name: \"Laptop EMI\", category: \"Loan\", amountINR: 7800, dueDate: addDays(TODAY, 45), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-05\", name: \"Fibre internet\", category: \"Utilities\", amountINR: 999, dueDate: addDays(TODAY, -3), status: \"paid\", recurrence: \"monthly\" },\n  { id: \"B-06\", name: \"Mobile plan\", category: \"Utilities\", amountINR: 749, dueDate: addDays(TODAY, -8), status: \"paid\", recurrence: \"monthly\" },\n];\n\nexport const cashAccounts: CashAccount[] = [\n  { id: \"CA-01\", label: \"Primary savings account\", balanceINR: 412500, asOfDate: TODAY },\n  { id: \"CA-02\", label: \"Current account\", balanceINR: 96800, asOfDate: TODAY },\n  { id: \"CA-03\", label: \"Cash and UPI wallet\", balanceINR: 8450, asOfDate: TODAY },\n];\n\nexport const followUps: FollowUp[] = [\n  { id: \"FU-01\", invoiceId: \"INV-003\", date: addDays(TODAY, -45), note: \"Sent first reminder with invoice copy\", channel: \"email\" },\n  { id: \"FU-02\", invoiceId: \"INV-003\", date: addDays(TODAY, -30), note: \"Client said payment is in the next approval cycle\", channel: \"whatsapp\" },\n  { id: \"FU-03\", invoiceId: \"INV-004\", date: addDays(TODAY, -12), note: \"Called accounts team; promised payment by month end\", channel: \"phone\" },\n];\n"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "ERROR: Parent directory does not exist. Call create_directory first for src\\data"
+        },
+        {
+          "id": "6cfcdc64-8dec-428a-9244-bf02e7c76b7b",
+          "name": "create_directory",
+          "args": {
+            "directory_path": "src/utils"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "OK: Directory created at src\\utils"
+        },
+        {
+          "id": "19c7e588-fef6-4e30-b59b-1226d83214c6",
+          "name": "create_directory",
+          "args": {
+            "directory_path": "src/data"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "OK: Directory created at src\\data"
+        },
+        {
+          "id": "aa68dc91-f19e-439f-8ca8-b3ae77a1ef48",
+          "name": "create_directory",
+          "args": {
+            "directory_path": "src/components"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "OK: Directory created at src\\components"
+        },
+        {
+          "id": "4eac8860-ddfb-45ba-85e9-c1dfb9da6242",
+          "name": "create_directory",
+          "args": {
+            "directory_path": "src/screens"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "OK: Directory created at src\\screens"
+        },
+        {
+          "id": "d1664f81-6ec9-4214-9703-97225c27cb28",
+          "name": "write_file",
+          "args": {
+            "content": "const MS_PER_DAY = 86_400_000;\n\n/**\n * Formats an INR amount with ₹ and Indian digit grouping.\n * e.g. 1250000 -> \"₹12,50,000\", 125000 -> \"₹1,25,000\", -4500 -> \"-₹4,500\"\n */\nexport function formatINR(amount: number): string {\n  const sign = amount < 0 ? \"-\" : \"\";\n  const whole = Math.round(Math.abs(amount)).toString();\n\n  if (whole.length <= 3) {\n    return `${sign}₹${whole}`;\n  }\n\n  const last3 = whole.slice(-3);\n  const head = whole.slice(0, -3);\n  // Group the leading digits in pairs, e.g. \"1250\" -> \"12,50\".\n  const grouped = head.replace(/\\B(?=(\\d{2})+(?!\\d))/g, \",\");\n  return `${sign}₹${grouped},${last3}`;\n}\n\n/** Whole calendar days from `from` to `to` (both \"YYYY-MM-DD\"). Negative if `to` is earlier. */\nexport function daysBetween(from: string, to: string): number {\n  const start = Date.parse(`${from}T00:00:00Z`);\n  const end = Date.parse(`${to}T00:00:00Z`);\n  return Math.round((end - start) / MS_PER_DAY);\n}\n\n/** Adds a number of calendar days to a \"YYYY-MM-DD\" date and returns \"YYYY-MM-DD\". */\nexport function addDays(iso: string, days: number): string {\n  const date = new Date(`${iso}T00:00:00Z`);\n  date.setUTCDate(date.getUTCDate() + days);\n  return date.toISOString().slice(0, 10);\n}\n\n/** Formats \"YYYY-MM-DD\" for display, e.g. \"15 Jun 2025\". */\nexport function formatDate(iso: string): string {\n  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(\"en-IN\", {\n    day: \"2-digit\",\n    month: \"short\",\n    year: \"numeric\",\n    timeZone: \"UTC\",\n  });\n}\n",
+            "file_path": "src/utils/format.ts"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\utils\\format.ts"
+        },
+        {
+          "id": "08633b11-ec2a-41b1-b25c-7c00b0edd022",
+          "name": "write_file",
+          "args": {
+            "content": "import type {\n  Bill,\n  CashAccount,\n  Client,\n  FollowUp,\n  Invoice,\n  Payment,\n} from \"../types\";\nimport { addDays } from \"../utils/format\";\n\n// Fixed \"today\" so the demo is stable. Every other date below is relative to it.\nexport const TODAY = \"2025-06-15\";\n\n// Synthetic data only: no real people, banks, or tax identifiers.\n\nexport const clients: Client[] = [\n  { id: \"C-01\", name: \"Kaveri Textiles Pvt Ltd\", type: \"design\", city: \"Jaipur\", contact: \"accounts@kaveri.example.com\" },\n  { id: \"C-02\", name: \"Sunita Kapoor\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-02\" },\n  { id: \"C-03\", name: \"Brightpath Edu Labs\", type: \"design\", city: \"Bengaluru\", contact: \"hello@brightpath.example.com\" },\n  { id: \"C-04\", name: \"Meera Iyer\", type: \"design\", city: \"Bengaluru\", contact: \"placeholder-04\" },\n  { id: \"C-05\", name: \"Vikram Choudhury\", type: \"tutoring\", city: \"Pune\", contact: \"placeholder-05\" },\n  { id: \"C-06\", name: \"Greenleaf Organics\", type: \"design\", city: \"Kochi\", contact: \"ops@greenleaf.example.com\" },\n  { id: \"C-07\", name: \"Priya Sharma\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-07\" },\n];\n\nexport const invoices: Invoice[] = [\n  // Paid\n  { id: \"INV-001\", clientId: \"C-01\", description: \"Packaging label redesign\", amountINR: 85000, issueDate: addDays(TODAY, -60), dueDate: addDays(TODAY, -45), status: \"paid\", paidDate: addDays(TODAY, -40) },\n  { id: \"INV-002\", clientId: \"C-02\", description: \"Class 10 Maths tutoring, May\", amountINR: 24000, issueDate: addDays(TODAY, -50), dueDate: addDays(TODAY, -35), status: \"paid\", paidDate: addDays(TODAY, -36) },\n  { id: \"INV-013\", clientId: \"C-07\", description: \"Weekend art tutoring, April\", amountINR: 16000, issueDate: addDays(TODAY, -45), dueDate: addDays(TODAY, -30), status: \"paid\", paidDate: addDays(TODAY, -32) },\n  // Overdue (status 'overdue' always has dueDate before TODAY)\n  { id: \"INV-003\", clientId: \"C-03\", description: \"Learning app UI kit, phase 2\", amountINR: 185000, issueDate: addDays(TODAY, -75), dueDate: addDays(TODAY, -60), status: \"overdue\" },\n  { id: \"INV-004\", clientId: \"C-04\", description: \"Brand identity: logo and guidelines\", amountINR: 120000, issueDate: addDays(TODAY, -40), dueDate: addDays(TODAY, -25), status: \"overdue\" },\n  { id: \"INV-005\", clientId: \"C-05\", description: \"JEE Physics tutoring, May batch\", amountINR: 18000, issueDate: addDays(TODAY, -30), dueDate: addDays(TODAY, -10), status: \"overdue\" },\n  { id: \"INV-006\", clientId: \"C-06\", description: \"Website landing page design\", amountINR: 96000, issueDate: addDays(TODAY, -20), dueDate: addDays(TODAY, -5), status: \"overdue\" },\n  // Sent, due within the next 14 days\n  { id: \"INV-007\", clientId: \"C-07\", description: \"Weekend art tutoring, June\", amountINR: 16000, issueDate: addDays(TODAY, -10), dueDate: addDays(TODAY, 3), status: \"sent\" },\n  { id: \"INV-008\", clientId: \"C-01\", description: \"Catalogue cover design\", amountINR: 62000, issueDate: addDays(TODAY, -5), dueDate: addDays(TODAY, 9), status: \"sent\" },\n  { id: \"INV-009\", clientId: \"C-04\", description: \"Social media creative pack\", amountINR: 45000, issueDate: addDays(TODAY, -2), dueDate: addDays(TODAY, 12), status: \"sent\" },\n  // Sent, due later\n  { id: \"INV-010\", clientId: \"C-02\", description: \"Class 12 Chemistry tutoring, June\", amountINR: 24000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 20), status: \"sent\" },\n  // Draft\n  { id: \"INV-011\", clientId: \"C-03\", description: \"Onboarding illustration set\", amountINR: 140000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 30), status: \"draft\" },\n  { id: \"INV-012\", clientId: \"C-06\", description: \"Packaging mockups, phase 2\", amountINR: 72000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 25), status: \"draft\" },\n];\n\nexport const payments: Payment[] = [\n  { id: \"P-001\", invoiceId: \"INV-001\", amountINR: 85000, receivedDate: addDays(TODAY, -40) },\n  { id: \"P-002\", invoiceId: \"INV-002\", amountINR: 24000, receivedDate: addDays(TODAY, -36) },\n  { id: \"P-003\", invoiceId: \"INV-013\", amountINR: 16000, receivedDate: addDays(TODAY, -32) },\n];\n\nexport const bills: Bill[] = [\n  { id: \"B-01\", name: \"Co-working desk\", category: \"Workspace\", amountINR: 12000, dueDate: addDays(TODAY, 7), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-02\", name: \"Adobe Creative Cloud\", category: \"Software\", amountINR: 4230, dueDate: addDays(TODAY, 4), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-03\", name: \"Health insurance premium\", category: \"Insurance\", amountINR: 18500, dueDate: addDays(TODAY, 22), status: \"upcoming\", recurrence: \"yearly\" },\n  { id: \"B-04\", name: \"Laptop EMI\", category: \"Loan\", amountINR: 7800, dueDate: addDays(TODAY, 45), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-05\", name: \"Fibre internet\", category: \"Utilities\", amountINR: 999, dueDate: addDays(TODAY, -3), status: \"paid\", recurrence: \"monthly\" },\n  { id: \"B-06\", name: \"Mobile plan\", category: \"Utilities\", amountINR: 749, dueDate: addDays(TODAY, -8), status: \"paid\", recurrence: \"monthly\" },\n];\n\nexport const cashAccounts: CashAccount[] = [\n  { id: \"CA-01\", label: \"Primary savings account\", balanceINR: 412500, asOfDate: TODAY },\n  { id: \"CA-02\", label: \"Current account\", balanceINR: 96800, asOfDate: TODAY },\n  { id: \"CA-03\", label: \"Cash and UPI wallet\", balanceINR: 8450, asOfDate: TODAY },\n];\n\nexport const followUps: FollowUp[] = [\n  { id: \"FU-01\", invoiceId: \"INV-003\", date: addDays(TODAY, -45), note: \"Sent first reminder with invoice copy\", channel: \"email\" },\n  { id: \"FU-02\", invoiceId: \"INV-003\", date: addDays(TODAY, -30), note: \"Client said payment is in the next approval cycle\", channel: \"whatsapp\" },\n  { id: \"FU-03\", invoiceId: \"INV-004\", date: addDays(TODAY, -12), note: \"Called accounts team; promised payment by month end\", channel: \"phone\" },\n];\n",
+            "file_path": "src/data/seed.ts"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\data\\seed.ts"
+        },
+        {
+          "id": "bb672ade-0d58-4687-8a5b-af0777e09ace",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/utils/format.ts"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\utils\\format.ts was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "2a708502-35ed-4162-a176-f86e7573bfea",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/data/seed.ts"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\data\\seed.ts was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "1c1aa1f9-1396-4f99-ad4b-e602e529cee7",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/types.ts"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\types.ts was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "7eca46f0-ff2a-4de9-a91f-9ba4be3834cd",
+          "name": "write_file",
+          "args": {
+            "content": "export type ScreenId = \"overview\" | \"invoices\" | \"forecast\" | \"bills\";\n\ninterface NavItem {\n  id: ScreenId;\n  label: string;\n}\n\nconst NAV_ITEMS: NavItem[] = [\n  { id: \"overview\", label: \"Overview\" },\n  { id: \"invoices\", label: \"Invoices\" },\n  { id: \"forecast\", label: \"Cash Forecast\" },\n  { id: \"bills\", label: \"Bills\" },\n];\n\ninterface SidebarProps {\n  active: ScreenId;\n  onNavigate: (id: ScreenId) => void;\n}\n\nexport default function Sidebar({ active, onNavigate }: SidebarProps) {\n  return (\n    <aside className=\"flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white\">\n      <div className=\"px-6 py-6\">\n        <p className=\"text-sm font-semibold text-slate-900\">Back Office</p>\n        <p className=\"text-xs text-slate-500\">PS-01 · INR</p>\n      </div>\n      <nav className=\"flex flex-col gap-1 px-3\">\n        {NAV_ITEMS.map((item) => {\n          const isActive = item.id === active;\n          return (\n            <button\n              key={item.id}\n              type=\"button\"\n              onClick={() => onNavigate(item.id)}\n              aria-current={isActive ? \"page\" : undefined}\n              className={\n                isActive\n                  ? \"rounded-md bg-slate-900 px-3 py-2 text-left text-sm font-medium text-white\"\n                  : \"rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100\"\n              }\n            >\n              {item.label}\n            </button>\n          );\n        })}\n      </nav>\n    </aside>\n  );\n}\n",
+            "file_path": "src/components/Sidebar.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\components\\Sidebar.tsx"
+        },
+        {
+          "id": "560fa67b-2107-427a-af0c-bdd79e8d7ca6",
+          "name": "write_file",
+          "args": {
+            "content": "interface StatCardProps {\n  label: string;\n  value: string;\n  subtitle?: string;\n}\n\nexport default function StatCard({ label, value, subtitle }: StatCardProps) {\n  return (\n    <div className=\"rounded-lg border border-slate-200 bg-white p-5 shadow-sm\">\n      <p className=\"text-sm font-medium text-slate-500\">{label}</p>\n      <p className=\"mt-2 text-2xl font-semibold text-slate-900\">{value}</p>\n      {subtitle ? <p className=\"mt-1 text-xs text-slate-500\">{subtitle}</p> : null}\n    </div>\n  );\n}\n",
+            "file_path": "src/components/StatCard.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\components\\StatCard.tsx"
+        },
+        {
+          "id": "4d4833dc-6e40-46dd-90d8-2c883bc7490e",
+          "name": "write_file",
+          "args": {
+            "content": "interface PlaceholderProps {\n  title: string;\n}\n\nexport default function Placeholder({ title }: PlaceholderProps) {\n  return (\n    <section>\n      <h1 className=\"text-2xl font-semibold text-slate-900\">{title}</h1>\n      <p className=\"mt-2 text-sm text-slate-500\">Coming in a later slice.</p>\n    </section>\n  );\n}\n",
+            "file_path": "src/screens/Placeholder.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\screens\\Placeholder.tsx"
+        },
+        {
+          "id": "e5a2fc73-8ac5-46b9-880d-a346b967393e",
+          "name": "write_file",
+          "args": {
+            "content": "import { useState } from \"react\";\nimport StatCard from \"../components/StatCard\";\nimport { TODAY, bills, cashAccounts, clients, invoices } from \"../data/seed\";\nimport type { Invoice, InvoiceStatus } from \"../types\";\nimport { addDays, daysBetween, formatDate, formatINR } from \"../utils/format\";\n\ntype FilterTab = \"all\" | \"overdue\" | \"sent\" | \"draft\";\n\ninterface TabDef {\n  id: FilterTab;\n  label: string;\n}\n\nconst TABS: TabDef[] = [\n  { id: \"all\", label: \"All\" },\n  { id: \"overdue\", label: \"Overdue\" },\n  { id: \"sent\", label: \"Sent\" },\n  { id: \"draft\", label: \"Draft\" },\n];\n\nconst DUE_SOON_DAYS = 14;\nconst BILLS_WINDOW_DAYS = 30;\n\nconst STATUS_STYLES: Record<InvoiceStatus, string> = {\n  draft: \"bg-slate-100 text-slate-700\",\n  sent: \"bg-blue-100 text-blue-800\",\n  overdue: \"bg-red-100 text-red-800\",\n  paid: \"bg-emerald-100 text-emerald-800\",\n};\n\nconst STATUS_LABELS: Record<InvoiceStatus, string> = {\n  draft: \"Draft\",\n  sent: \"Sent\",\n  overdue: \"Overdue\",\n  paid: \"Paid\",\n};\n\nfunction sumBy<T>(items: readonly T[], pick: (item: T) => number): number {\n  return items.reduce((total, item) => total + pick(item), 0);\n}\n\nfunction clientName(clientId: string): string {\n  return clients.find((client) => client.id === clientId)?.name ?? \"Unknown client\";\n}\n\nfunction daysOverdue(invoice: Invoice): number {\n  return invoice.dueDate < TODAY ? daysBetween(invoice.dueDate, TODAY) : 0;\n}\n\nexport default function Overview() {\n  const [activeTab, setActiveTab] = useState<FilterTab>(\"all\");\n\n  const dueSoonEnd = addDays(TODAY, DUE_SOON_DAYS);\n  const billsEnd = addDays(TODAY, BILLS_WINDOW_DAYS);\n\n  const unpaid = invoices.filter((invoice) => invoice.status !== \"paid\");\n  const overdue = unpaid.filter((invoice) => invoice.status === \"overdue\");\n  const dueSoon = unpaid.filter(\n    (invoice) => invoice.dueDate >= TODAY && invoice.dueDate <= dueSoonEnd,\n  );\n  const upcomingBills = bills.filter(\n    (bill) => bill.status === \"upcoming\" && bill.dueDate >= TODAY && bill.dueDate <= billsEnd,\n  );\n  const currentCash = sumBy(cashAccounts, (account) => account.balanceINR);\n\n  const rows = unpaid\n    .filter((invoice) => activeTab === \"all\" || invoice.status === activeTab)\n    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));\n\n  function tabCount(tab: FilterTab): number {\n    return tab === \"all\" ? unpaid.length : unpaid.filter((invoice) => invoice.status === tab).length;\n  }\n\n  return (\n    <section className=\"space-y-8\">\n      <h1 className=\"text-2xl font-semibold text-slate-900\">Overview</h1>\n\n      <div className=\"grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4\">\n        <StatCard\n          label=\"Current Cash\"\n          value={formatINR(currentCash)}\n          subtitle={`Sum of ${cashAccounts.length} cash account balances`}\n        />\n        <StatCard\n          label=\"Total Overdue\"\n          value={formatINR(sumBy(overdue, (invoice) => invoice.amountINR))}\n          subtitle={`${overdue.length} overdue ${overdue.length === 1 ? \"invoice\" : \"invoices\"}`}\n        />\n        <StatCard\n          label=\"Due Next 14 Days\"\n          value={formatINR(sumBy(dueSoon, (invoice) => invoice.amountINR))}\n          subtitle={`${dueSoon.length} unpaid ${dueSoon.length === 1 ? \"invoice\" : \"invoices\"} due by ${formatDate(dueSoonEnd)}`}\n        />\n        <StatCard\n          label=\"Upcoming Bills\"\n          value={formatINR(sumBy(upcomingBills, (bill) => bill.amountINR))}\n          subtitle=\"Bills with status upcoming, due within 30 days\"\n        />\n      </div>\n\n      <div className=\"rounded-lg border border-slate-200 bg-white shadow-sm\">\n        <div className=\"flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-5 py-4\">\n          <h2 className=\"text-lg font-semibold text-slate-900\">Who Owes Me</h2>\n          <div role=\"tablist\" aria-label=\"Filter invoices by status\" className=\"flex gap-1\">\n            {TABS.map((tab) => {\n              const isActive = tab.id === activeTab;\n              return (\n                <button\n                  key={tab.id}\n                  type=\"button\"\n                  role=\"tab\"\n                  aria-selected={isActive}\n                  onClick={() => setActiveTab(tab.id)}\n                  className={\n                    isActive\n                      ? \"rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white\"\n                      : \"rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100\"\n                  }\n                >\n                  {tab.label} ({tabCount(tab.id)})\n                </button>\n              );\n            })}\n          </div>\n        </div>\n\n        <div className=\"overflow-x-auto\">\n          <table className=\"min-w-full divide-y divide-slate-200 text-sm\">\n            <thead className=\"bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500\">\n              <tr>\n                <th className=\"px-5 py-3 font-medium\">Client</th>\n                <th className=\"px-5 py-3 font-medium\">Invoice</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Amount</th>\n                <th className=\"px-5 py-3 font-medium\">Due Date</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Days Overdue</th>\n                <th className=\"px-5 py-3 font-medium\">Status</th>\n              </tr>\n            </thead>\n            <tbody className=\"divide-y divide-slate-100\">\n              {rows.map((invoice) => {\n                const late = daysOverdue(invoice);\n                return (\n                  <tr key={invoice.id} className=\"text-slate-700\">\n                    <td className=\"px-5 py-3 font-medium text-slate-900\">{clientName(invoice.clientId)}</td>\n                    <td className=\"px-5 py-3\">\n                      <span className=\"block\">{invoice.id}</span>\n                      <span className=\"block text-xs text-slate-500\">{invoice.description}</span>\n                    </td>\n                    <td className=\"px-5 py-3 text-right tabular-nums\">{formatINR(invoice.amountINR)}</td>\n                    <td className=\"px-5 py-3\">{formatDate(invoice.dueDate)}</td>\n                    <td className={`px-5 py-3 text-right tabular-nums ${late > 0 ? \"text-red-700\" : \"\"}`}>\n                      {late}\n                    </td>\n                    <td className=\"px-5 py-3\">\n                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[invoice.status]}`}>\n                        {STATUS_LABELS[invoice.status]}\n                      </span>\n                    </td>\n                  </tr>\n                );\n              })}\n              {rows.length === 0 ? (\n                <tr>\n                  <td colSpan={6} className=\"px-5 py-8 text-center text-slate-500\">\n                    No invoices in this view.\n                  </td>\n                </tr>\n              ) : null}\n            </tbody>\n          </table>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+            "file_path": "src/screens/Overview.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully created src\\screens\\Overview.tsx"
+        },
+        {
+          "id": "65d67598-f214-431a-93c0-84f1a289b443",
+          "name": "write_file",
+          "args": {
+            "content": "import { useState } from \"react\";\nimport Placeholder from \"./screens/Placeholder\";\nimport Overview from \"./screens/Overview\";\nimport Sidebar, { type ScreenId } from \"./components/Sidebar\";\n\nexport default function App() {\n  const [screen, setScreen] = useState<ScreenId>(\"overview\");\n\n  return (\n    <div className=\"flex min-h-screen bg-slate-50\">\n      <Sidebar active={screen} onNavigate={setScreen} />\n      <main className=\"flex-1 p-8\">{renderScreen(screen)}</main>\n    </div>\n  );\n}\n\nfunction renderScreen(screen: ScreenId) {\n  switch (screen) {\n    case \"overview\":\n      return <Overview />;\n    case \"invoices\":\n      return <Placeholder title=\"Invoices\" />;\n    case \"forecast\":\n      return <Placeholder title=\"Cash Forecast\" />;\n    case \"bills\":\n      return <Placeholder title=\"Bills\" />;\n  }\n}\n",
+            "file_path": "src/App.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "ERROR: File already exists: src\\App.tsx. Pass overwrite=true to replace its contents, or use apply_diff / replace_lines to edit it."
+        },
+        {
+          "id": "c0110aa6-4772-442c-bb6b-68f1b34034e4",
+          "name": "write_file",
+          "args": {
+            "content": "import { useState } from \"react\";\nimport Sidebar, { type ScreenId } from \"./components/Sidebar\";\nimport Overview from \"./screens/Overview\";\nimport Placeholder from \"./screens/Placeholder\";\n\nexport default function App() {\n  const [screen, setScreen] = useState<ScreenId>(\"overview\");\n\n  return (\n    <div className=\"flex min-h-screen bg-slate-50\">\n      <Sidebar active={screen} onNavigate={setScreen} />\n      <main className=\"flex-1 p-8\">{renderScreen(screen)}</main>\n    </div>\n  );\n}\n\nfunction renderScreen(screen: ScreenId) {\n  switch (screen) {\n    case \"overview\":\n      return <Overview />;\n    case \"invoices\":\n      return <Placeholder title=\"Invoices\" />;\n    case \"forecast\":\n      return <Placeholder title=\"Cash Forecast\" />;\n    case \"bills\":\n      return <Placeholder title=\"Bills\" />;\n  }\n}\n",
+            "file_path": "src/App.tsx",
+            "overwrite": true
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "Successfully overwrote src\\App.tsx",
+          "diff": {
+            "additions": 24,
+            "deletions": 5,
+            "hunks": [
+              {
+                "header": "@@ -1,10 +1,29 @@",
+                "lines": [
+                  {
+                    "kind": "add",
+                    "text": "import { useState } from \"react\";"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "import Sidebar, { type ScreenId } from \"./components/Sidebar\";"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "import Overview from \"./screens/Overview\";"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "import Placeholder from \"./screens/Placeholder\";"
+                  },
+                  {
+                    "kind": "add",
+                    "text": ""
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "export default function App() {"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "  const [screen, setScreen] = useState<ScreenId>(\"overview\");"
+                  },
+                  {
+                    "kind": "add",
+                    "text": ""
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "  return ("
+                  },
+                  {
+                    "kind": "del",
+                    "text": "    <main className=\"min-h-screen bg-slate-50 p-8\">"
+                  },
+                  {
+                    "kind": "del",
+                    "text": "      <h1 className=\"text-2xl font-semibold text-slate-900\">"
+                  },
+                  {
+                    "kind": "del",
+                    "text": "        PS-01 — The One-Person Back Office"
+                  },
+                  {
+                    "kind": "del",
+                    "text": "      </h1>"
+                  },
+                  {
+                    "kind": "del",
+                    "text": "    </main>"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    <div className=\"flex min-h-screen bg-slate-50\">"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      <Sidebar active={screen} onNavigate={setScreen} />"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      <main className=\"flex-1 p-8\">{renderScreen(screen)}</main>"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    </div>"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "  );"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "}"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": ""
+                  },
+                  {
+                    "kind": "add",
+                    "text": "function renderScreen(screen: ScreenId) {"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "  switch (screen) {"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    case \"overview\":"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      return <Overview />;"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    case \"invoices\":"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      return <Placeholder title=\"Invoices\" />;"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    case \"forecast\":"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      return <Placeholder title=\"Cash Forecast\" />;"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "    case \"bills\":"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      return <Placeholder title=\"Bills\" />;"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "  }"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "}"
+                  },
+                  {
+                    "kind": "add",
+                    "text": ""
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "f2fac8c6-45a8-4e0f-8a0a-bcd60abbdeaf",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/screens/Overview.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\screens\\Overview.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "4e2f7ecd-e362-498d-943b-83fa783a7b04",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/components/Sidebar.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\components\\Sidebar.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "b4bf1965-7dbb-406d-8c8d-512643269518",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/App.tsx"
+          },
+          "agentId": "parent.editor-0ad7a8",
+          "result": "WARNING: src\\App.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "parent.tester-8b090d",
+          "name": "spawn_agent",
+          "args": {
+            "task": "Host OS is Windows; use Windows-appropriate shell commands. In this project run the TypeScript check and the production build: `npm run build` (which runs `tsc --noEmit && vite build`). Do not install packages and do not edit any files. If it fails, report the exact error messages with file and line numbers. Also report whether src/main.tsx imports './index.css' and whether that file exists under src/. Return the actual command output summary (pass/fail for tsc, pass/fail for vite build, and any warnings), not a paraphrase.",
+            "agentType": "tester",
+            "depth": 1
+          },
+          "result": "✓ 3 turns · 4 tool calls"
+        },
+        {
+          "id": "e59f1e38-98e6-4f1f-b4f2-e79654b05bae",
+          "name": "run_powershell_command",
+          "args": {
+            "command": "npm run build 2>&1 | Out-String -Width 4000"
+          },
+          "agentId": "parent.tester-8b090d",
+          "result": "Error: PowerShell (pwsh) isn't available on this machine. If this is macOS/Linux, re-run using run_terminal_command with a POSIX (bash/sh) command instead — do NOT retry PowerShell here.\n(To use PowerShell, install it: Mac/Linux `brew install --cask powershell`, Windows `winget install Microsoft.PowerShell`.)",
+          "testResult": {
+            "kind": "build",
+            "runner": null,
+            "status": "unknown",
+            "verdict": "",
+            "counts": {},
+            "failed_ids": [],
+            "new_failures": [],
+            "pre_existing": [],
+            "attention": false,
+            "command": "npm run build 2>&1 | Out-String -Width 4000"
+          }
+        },
+        {
+          "id": "d8367067-7051-4301-946a-b74440431745",
+          "name": "read_file",
+          "args": {
+            "file_path": "src/main.tsx"
+          },
+          "agentId": "parent.tester-8b090d",
+          "result": "--- src\\main.tsx ---\nimport { StrictMode } from \"react\";\nimport { createRoot } from \"react-dom/client\";\nimport \"./index.css\";\nimport App from \"./App\";\n\ncreateRoot(document.getElementById(\"root\")!).render(\n  <StrictMode>\n    <App />\n  </StrictMode>,\n);\n"
+        },
+        {
+          "id": "63f7c0ff-63b6-4f70-95f9-7df88f5f3ffb",
+          "name": "find_files",
+          "args": {
+            "pattern": "index.css"
+          },
+          "agentId": "parent.tester-8b090d",
+          "result": "src\\index.css"
+        },
+        {
+          "id": "085d1a6c-7f55-4f43-aed5-dd32cd1ea573",
+          "name": "run_terminal_command",
+          "args": {
+            "command": "npm run build"
+          },
+          "agentId": "parent.tester-8b090d",
+          "result": "Command: npm run build\nExit Code: 0\nSTDOUT:\n\n> ps-01-back-office@0.0.0 build\n> tsc --noEmit && vite build\n\n\u001b[36mvite v6.4.6 \u001b[32mbuilding for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 35 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.42 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.29 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[35massets/index-s5ns-jhQ.css  \u001b[39m\u001b[1m\u001b[2m 14.76 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.77 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[36massets/index-Qx8vtnuO.js   \u001b[39m\u001b[1m\u001b[2m234.17 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 72.76 kB\u001b[22m\n\u001b[32m✓ built in 839ms\u001b[39m\n\nSTDERR:\n",
+          "testResult": {
+            "kind": "build",
+            "runner": null,
+            "status": "unknown",
+            "verdict": "",
+            "counts": {},
+            "failed_ids": [],
+            "new_failures": [],
+            "pre_existing": [],
+            "attention": false,
+            "command": "npm run build"
+          }
+        }
+      ],
+      "thinking": "Slice 1 is in place across 8 files, but I had no shell, so build and type-check were not run. Edited, not test-verified (no shell). `lint_file` was unavailable (esbuild missing), so no file was syntax-checked either.\n\n**Files**\n- `src/types.ts`: new. Client, Invoice, Payment, Bill, CashAccount, FollowUp, plus status and recurrence unions.\n- `src/data/seed.ts`: new. `TODAY = \"2025-06-15\"`, 7 clients, 13 invoices, 3 payments, 6 bills, 3 cash accounts, 3 follow-ups. All dates are computed relative to TODAY.\n- `src/utils/format.ts`: new. `formatINR` (Indian grouping), `daysBetween`, plus `addDays` and `formatDate` helpers.\n- `src/components/Sidebar.tsx`: new. Four nav items (Overview, Invoices, Cash Forecast, Bills).\n- `src/components/StatCard.tsx`: new. Label, value, optional subtitle.\n- `src/screens/Overview.tsx`: new. KPI row and Who Owes Me table.\n- `src/screens/Placeholder.tsx`: new. Heading plus \"Coming in a later slice.\"\n- `src/App.tsx`: overwritten. Sidebar and main layout with `useState` navigation. `main.tsx` is unchanged.\n\n**Tab to filter mapping** (over unpaid invoices only)\n- All: every unpaid invoice (10)\n- Overdue: `status === \"overdue\"` (4)\n- Sent: `status === \"sent\"` (4)\n- Draft: `status === \"draft\"` (2)\n\n**Who Owes Me row count:** 10 rows under All, sorted by due date.\n\n**KPI definitions**\n- Current Cash: sum of the 3 cash account balances, ₹5,17,750.\n- Total Overdue: unpaid invoices with status overdue. ₹4,19,000 across 4 invoices.\n- Due Next 14 Days: unpaid invoices with dueDate from TODAY through TODAY+14 inclusive. ₹1,23,000 across 3 invoices. Drafts are included if they fall in the window, since the spec says \"unpaid\".\n- Upcoming Bills: bills with status upcoming and dueDate within 30 days of TODAY, stated in the subtitle. ₹34,730 across 3 bills. The laptop EMI due in 45 days is excluded.\n\n**Things to check**\n- `main.tsx` imports `./index.css`. I did not verify that file exists, and the build will fail if it is missing.\n- I added a `daysOverdue` rule: days overdue is shown only when dueDate is before TODAY.\n- The Overview's `Upcoming Bills` count uses the same window logic as the subtitle.The task list is updated. I marked \"Build Slice 1\" completed, since all eight files were written in the previous turn. The file edits are done, not verified.\n\nI marked \"Verify with type-check and build\" as cancelled, not completed, because I have no shell and did not run it. The delegating agent needs to run `tsc --noEmit` and the Vite build, and check that `src/main.tsx`'s `./index.css` import resolves.PowerShell isn't available on this machine, so I'll run the same `npm run build` through the bash shell.**Result: PASS.** `npm run build` exited with code 0.\n\n**Command:** `npm run build` (runs `tsc --noEmit && vite build`), run from the project root. PowerShell isn't available on this machine, so I ran it through the bash shell. The command itself is unchanged.\n\n**Output summary:**\n- **tsc (`--noEmit`): PASS.** It printed no diagnostics. Because the script chains with `&&`, vite only runs if tsc exits 0, and it did.\n- **vite build v6.4.6: PASS.** 35 modules transformed, built in 839ms.\n  - `dist/index.html` 0.42 kB (gzip 0.29 kB)\n  - `dist/assets/index-s5ns-jhQ.css` 14.76 kB (gzip 3.77 kB)\n  - `dist/assets/index-Qx8vtnuO.js` 234.17 kB (gzip 72.76 kB)\n- **Warnings:** none. STDERR was empty and vite printed no chunk-size or other warnings.\n\n**src/main.tsx:** imports `./index.css` on line 3 (`import \"./index.css\";`).\n\n**src/index.css:** exists at `src\\index.css`. The find returned that path, and the CSS bundle was emitted in the build, so the import resolved.\n\nI did not install packages or edit any files."
+    },
+    {
+      "role": "assistant",
+      "content": "Slice 1 is built and passes the type check and production build. I haven't yet checked the screen in a browser, and I haven't reviewed the seeded values or the table rows myself.\n\n**Verification:** `npm run build` (`tsc --noEmit && vite build`) passed with no type errors and no warnings. The build produced `dist/` output.\n\n**Files written** (under `src/`):\n- `App.tsx`: sidebar plus main area, with in-state navigation between the four screens.\n- `components/Sidebar.tsx`: navigation for Overview, Invoices, Cash Forecast and Bills.\n- `components/StatCard.tsx`: the KPI card component.\n- `screens/Overview.tsx`: the four KPI cards and the \"Who Owes Me\" table with its filter tabs.\n- `screens/Placeholder.tsx`: the \"Coming in a later slice\" view for the other three screens.\n- `data/seed.ts`: a fixed `TODAY` date and seeded clients, invoices, payments, bills, cash accounts and follow-ups, with dates computed relative to `TODAY`.\n- `types.ts`: types for the spec's data model.\n- `utils/format.ts`: `formatINR` with lakh grouping (e.g. ₹12,50,000) and a `daysBetween` helper.\n\n**Design choices** (from the editor's brief, not checked against the output):\n- Upcoming Bills is bills with status `upcoming` due within 30 days of `TODAY`.\n- Due Next 14 Days is unpaid invoices due within 14 days of `TODAY`.\n- Who Owes Me shows unpaid invoices only, with tabs All, Overdue, Sent and Draft.\n- Days Overdue is `TODAY` minus due date when past due, otherwise 0.\n\nThe editor did not report the computed KPI values or the row count in Who Owes Me, so I can't state them. Opening `npm run dev` is the quickest way to check them.\n\nNot built, as requested: the cash forecast chart, the what-if simulator, the invoice list, the bills list and follow-up logging.",
+      "timestamp": 1795255854374
+    },
+    {
+      "role": "user",
+      "content": "Approved. Proceed with Slice 02 using the plan you proposed.\n\nDecisions:\n1. Follow-up logging: Read-only. Display existing follow-up records only. Do not add a follow-up form.\n2. Shared status badge: Keep `Overview.tsx` completely untouched. Duplicate the badge styling in the new Invoices screen.\n3. Reminder rule: Use the 14-day threshold for overdue invoices without a recent follow-up.\n\nAdditional requirements:\n- Calculate each client's outstanding balance using unpaid invoices only.\n- Exclude paid invoices from outstanding balances.\n- Keep all existing Overview functionality and styling unchanged.\n- Reuse existing seed data and utilities wherever possible.\n- Do not implement features from later slices.\n\nAfter implementation, run `npm run build` and report the changed files, invoice counts by status, client outstanding balances, and verification results.\n\nProceed with Slice 02 only.",
+      "timestamp": 1795271892433
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "timestamp": 1795271922393,
+      "interim": true,
+      "toolCalls": [
+        {
+          "id": "parent.editor-0c2e25",
+          "name": "spawn_agent",
+          "args": {
+            "task": "Implement Slice 02 (Invoices screen) in the React + Vite + TypeScript + Tailwind project. Host OS is Windows. Make ONLY the changes listed below. Do NOT touch src/screens/Overview.tsx, src/data/seed.ts, src/types.ts, src/utils/format.ts, src/components/StatCard.tsx, src/components/Sidebar.tsx, package.json, or any other file. Do not install anything. Do not add any follow-up form, input, or write action: this screen is read-only.\n\nBefore writing, read src/types.ts, src/data/seed.ts, src/utils/format.ts, src/App.tsx, and src/screens/Overview.tsx (read only; do not edit Overview.tsx) so you reuse the same imports, TODAY constant, formatINR, formatDate, daysBetween, addDays, and the same Tailwind styling conventions.\n\n1. CREATE src/utils/invoices.ts with pure helpers (typed, no unused exports):\n   - isUnpaid(invoice): status !== \"paid\".\n   - outstandingByClient(clients, invoices): returns an array of { client, outstandingINR, invoiceCount } for EVERY client, where outstandingINR sums amountINR of UNPAID invoices only (status draft, sent, or overdue). invoiceCount is the count of those unpaid invoices. Paid invoices are excluded. Sort by outstandingINR descending, then client name ascending.\n   - followUpsFor(invoiceId, followUps): followUps filtered to that invoiceId, sorted by date descending.\n   - needsReminder(invoice, followUps, today): true only if invoice.status === \"overdue\" AND there is no follow-up for that invoice dated on or after addDays(today, -14). No other rule.\n\n2. CREATE src/components/StatusBadge.tsx: a small component taking a status prop of type InvoiceStatus and rendering the same pill styling and labels as Overview uses. Because the owner decided to DUPLICATE rather than share, define its own style and label maps inside this new file (copy the same class strings from Overview.tsx's STATUS_STYLES and STATUS_LABELS, including paid). Do NOT import anything from Overview.tsx.\n\n3. CREATE src/screens/Invoices.tsx, default export Invoices, with:\n   - h1 \"Invoices\".\n   - Status filter tabs (role=\"tablist\", same look as Overview tabs): All, Draft, Sent, Overdue, Paid, each showing a count of invoices in that status across ALL invoices (All = total of all 13). Default selected tab: All.\n   - Invoice table with columns: Invoice (id on first line, description below in smaller grey text), Client (client name via clients lookup, fallback \"Unknown client\"), Amount (formatINR, right-aligned), Issue Date (formatDate), Due Date (formatDate), Days Overdue (daysBetween(dueDate, TODAY) when dueDate < TODAY and status is not paid, else 0; red text when > 0), Status (StatusBadge), and a Reminder column showing a small amber \"Follow up\" pill when needsReminder is true, otherwise an em dash. Filter rows by the active tab. Sort rows by dueDate ascending. Clicking a row selects that invoice (highlight the selected row with bg-slate-50). Show \"No invoices in this view.\" when empty.\n   - Below the table, a \"Client Balances\" section: a table with columns Client, City, Unpaid Invoices (count), Outstanding (formatINR, right-aligned), using outstandingByClient. Show all clients, including those with ₹0.\n   - A \"Follow-Up History\" panel showing the selected invoice's follow-ups (date via formatDate, channel, note), read-only. If no invoice is selected, show \"Select an invoice to see its follow-up history.\" If the selected invoice has none, show \"No follow-ups recorded for this invoice.\" Default selection: none.\n   - Use Tailwind utility classes only, matching Overview's card styling (rounded-lg border border-slate-200 bg-white shadow-sm). No new dependencies.\n   - No \"Days Overdue\" for paid invoices, no edit, create, or payment actions, no charts.\n\n4. EDIT src/App.tsx: add the import `import Invoices from \"./screens/Invoices\";` and change ONLY the \"invoices\" case in renderScreen from the Placeholder to `<Invoices />`. Keep the Placeholder import, since other cases still use it. Make no other change.\n\nMinimal change principle: nothing beyond what is listed. Keep TypeScript strict-compatible: no unused imports or variables, explicit types on exported functions and component props.\n\nReturn: the list of created/changed files with relative paths, the invoice counts per status as you implemented them, and confirm that Overview.tsx, seed.ts, and types.ts were not modified. You have no shell, so state that build was not run.",
+            "agentType": "editor",
+            "depth": 1
+          },
+          "result": "✓ 8 turns · 11 tool calls"
+        },
+        {
+          "id": "e08ce6b7-8b76-41bc-8184-9a54045607d2",
+          "name": "read_file",
+          "args": {
+            "paths": [
+              "src/types.ts",
+              "src/data/seed.ts",
+              "src/utils/format.ts",
+              "src/App.tsx",
+              "src/screens/Overview.tsx"
+            ]
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "--- src\\types.ts ---\n// Synthetic data model for PS-01 (see PROJECT_SPEC.md section 6).\n// All dates are ISO calendar dates \"YYYY-MM-DD\"; all money is INR as a number.\n\nexport type ClientType = \"design\" | \"tutoring\";\n\nexport interface Client {\n  id: string;\n  name: string;\n  type: ClientType;\n  city: string;\n  contact: string; // placeholder only\n}\n\nexport type InvoiceStatus = \"draft\" | \"sent\" | \"paid\" | \"overdue\";\n\nexport interface Invoice {\n  id: string;\n  clientId: string;\n  description: string;\n  amountINR: number;\n  issueDate: string;\n  dueDate: string;\n  status: InvoiceStatus;\n  paidDate?: string;\n}\n\nexport interface Payment {\n  id: string;\n  invoiceId: string;\n  amountINR: number;\n  receivedDate: string;\n}\n\nexport type BillStatus = \"upcoming\" | \"paid\" | \"overdue\";\n\nexport type Recurrence = \"one-time\" | \"monthly\" | \"quarterly\" | \"yearly\";\n\nexport interface Bill {\n  id: string;\n  name: string;\n  category: string;\n  amountINR: number;\n  dueDate: string;\n  status: BillStatus;\n  recurrence: Recurrence;\n}\n\nexport interface CashAccount {\n  id: string;\n  label: string;\n  balanceINR: number;\n  asOfDate: string;\n}\n\nexport type FollowUpChannel = \"email\" | \"whatsapp\" | \"phone\" | \"in-person\";\n\nexport interface FollowUp {\n  id: string;\n  invoiceId: string;\n  date: string;\n  note: string;\n  channel: FollowUpChannel;\n}\n\n\n--- src\\data\\seed.ts ---\nimport type {\n  Bill,\n  CashAccount,\n  Client,\n  FollowUp,\n  Invoice,\n  Payment,\n} from \"../types\";\nimport { addDays } from \"../utils/format\";\n\n// Fixed \"today\" so the demo is stable. Every other date below is relative to it.\nexport const TODAY = \"2025-06-15\";\n\n// Synthetic data only: no real people, banks, or tax identifiers.\n\nexport const clients: Client[] = [\n  { id: \"C-01\", name: \"Kaveri Textiles Pvt Ltd\", type: \"design\", city: \"Jaipur\", contact: \"accounts@kaveri.example.com\" },\n  { id: \"C-02\", name: \"Sunita Kapoor\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-02\" },\n  { id: \"C-03\", name: \"Brightpath Edu Labs\", type: \"design\", city: \"Bengaluru\", contact: \"hello@brightpath.example.com\" },\n  { id: \"C-04\", name: \"Meera Iyer\", type: \"design\", city: \"Bengaluru\", contact: \"placeholder-04\" },\n  { id: \"C-05\", name: \"Vikram Choudhury\", type: \"tutoring\", city: \"Pune\", contact: \"placeholder-05\" },\n  { id: \"C-06\", name: \"Greenleaf Organics\", type: \"design\", city: \"Kochi\", contact: \"ops@greenleaf.example.com\" },\n  { id: \"C-07\", name: \"Priya Sharma\", type: \"tutoring\", city: \"Chandigarh\", contact: \"placeholder-07\" },\n];\n\nexport const invoices: Invoice[] = [\n  // Paid\n  { id: \"INV-001\", clientId: \"C-01\", description: \"Packaging label redesign\", amountINR: 85000, issueDate: addDays(TODAY, -60), dueDate: addDays(TODAY, -45), status: \"paid\", paidDate: addDays(TODAY, -40) },\n  { id: \"INV-002\", clientId: \"C-02\", description: \"Class 10 Maths tutoring, May\", amountINR: 24000, issueDate: addDays(TODAY, -50), dueDate: addDays(TODAY, -35), status: \"paid\", paidDate: addDays(TODAY, -36) },\n  { id: \"INV-013\", clientId: \"C-07\", description: \"Weekend art tutoring, April\", amountINR: 16000, issueDate: addDays(TODAY, -45), dueDate: addDays(TODAY, -30), status: \"paid\", paidDate: addDays(TODAY, -32) },\n  // Overdue (status 'overdue' always has dueDate before TODAY)\n  { id: \"INV-003\", clientId: \"C-03\", description: \"Learning app UI kit, phase 2\", amountINR: 185000, issueDate: addDays(TODAY, -75), dueDate: addDays(TODAY, -60), status: \"overdue\" },\n  { id: \"INV-004\", clientId: \"C-04\", description: \"Brand identity: logo and guidelines\", amountINR: 120000, issueDate: addDays(TODAY, -40), dueDate: addDays(TODAY, -25), status: \"overdue\" },\n  { id: \"INV-005\", clientId: \"C-05\", description: \"JEE Physics tutoring, May batch\", amountINR: 18000, issueDate: addDays(TODAY, -30), dueDate: addDays(TODAY, -10), status: \"overdue\" },\n  { id: \"INV-006\", clientId: \"C-06\", description: \"Website landing page design\", amountINR: 96000, issueDate: addDays(TODAY, -20), dueDate: addDays(TODAY, -5), status: \"overdue\" },\n  // Sent, due within the next 14 days\n  { id: \"INV-007\", clientId: \"C-07\", description: \"Weekend art tutoring, June\", amountINR: 16000, issueDate: addDays(TODAY, -10), dueDate: addDays(TODAY, 3), status: \"sent\" },\n  { id: \"INV-008\", clientId: \"C-01\", description: \"Catalogue cover design\", amountINR: 62000, issueDate: addDays(TODAY, -5), dueDate: addDays(TODAY, 9), status: \"sent\" },\n  { id: \"INV-009\", clientId: \"C-04\", description: \"Social media creative pack\", amountINR: 45000, issueDate: addDays(TODAY, -2), dueDate: addDays(TODAY, 12), status: \"sent\" },\n  // Sent, due later\n  { id: \"INV-010\", clientId: \"C-02\", description: \"Class 12 Chemistry tutoring, June\", amountINR: 24000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 20), status: \"sent\" },\n  // Draft\n  { id: \"INV-011\", clientId: \"C-03\", description: \"Onboarding illustration set\", amountINR: 140000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 30), status: \"draft\" },\n  { id: \"INV-012\", clientId: \"C-06\", description: \"Packaging mockups, phase 2\", amountINR: 72000, issueDate: addDays(TODAY, 0), dueDate: addDays(TODAY, 25), status: \"draft\" },\n];\n\nexport const payments: Payment[] = [\n  { id: \"P-001\", invoiceId: \"INV-001\", amountINR: 85000, receivedDate: addDays(TODAY, -40) },\n  { id: \"P-002\", invoiceId: \"INV-002\", amountINR: 24000, receivedDate: addDays(TODAY, -36) },\n  { id: \"P-003\", invoiceId: \"INV-013\", amountINR: 16000, receivedDate: addDays(TODAY, -32) },\n];\n\nexport const bills: Bill[] = [\n  { id: \"B-01\", name: \"Co-working desk\", category: \"Workspace\", amountINR: 12000, dueDate: addDays(TODAY, 7), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-02\", name: \"Adobe Creative Cloud\", category: \"Software\", amountINR: 4230, dueDate: addDays(TODAY, 4), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-03\", name: \"Health insurance premium\", category: \"Insurance\", amountINR: 18500, dueDate: addDays(TODAY, 22), status: \"upcoming\", recurrence: \"yearly\" },\n  { id: \"B-04\", name: \"Laptop EMI\", category: \"Loan\", amountINR: 7800, dueDate: addDays(TODAY, 45), status: \"upcoming\", recurrence: \"monthly\" },\n  { id: \"B-05\", name: \"Fibre internet\", category: \"Utilities\", amountINR: 999, dueDate: addDays(TODAY, -3), status: \"paid\", recurrence: \"monthly\" },\n  { id: \"B-06\", name: \"Mobile plan\", category: \"Utilities\", amountINR: 749, dueDate: addDays(TODAY, -8), status: \"paid\", recurrence: \"monthly\" },\n];\n\nexport const cashAccounts: CashAccount[] = [\n  { id: \"CA-01\", label: \"Primary savings account\", balanceINR: 412500, asOfDate: TODAY },\n  { id: \"CA-02\", label: \"Current account\", balanceINR: 96800, asOfDate: TODAY },\n  { id: \"CA-03\", label: \"Cash and UPI wallet\", balanceINR: 8450, asOfDate: TODAY },\n];\n\nexport const followUps: FollowUp[] = [\n  { id: \"FU-01\", invoiceId: \"INV-003\", date: addDays(TODAY, -45), note: \"Sent first reminder with invoice copy\", channel: \"email\" },\n  { id: \"FU-02\", invoiceId: \"INV-003\", date: addDays(TODAY, -30), note: \"Client said payment is in the next approval cycle\", channel: \"whatsapp\" },\n  { id: \"FU-03\", invoiceId: \"INV-004\", date: addDays(TODAY, -12), note: \"Called accounts team; promised payment by month end\", channel: \"phone\" },\n];\n\n\n--- src\\utils\\format.ts ---\nconst MS_PER_DAY = 86_400_000;\n\n/**\n * Formats an INR amount with ₹ and Indian digit grouping.\n * e.g. 1250000 -> \"₹12,50,000\", 125000 -> \"₹1,25,000\", -4500 -> \"-₹4,500\"\n */\nexport function formatINR(amount: number): string {\n  const sign = amount < 0 ? \"-\" : \"\";\n  const whole = Math.round(Math.abs(amount)).toString();\n\n  if (whole.length <= 3) {\n    return `${sign}₹${whole}`;\n  }\n\n  const last3 = whole.slice(-3);\n  const head = whole.slice(0, -3);\n  // Group the leading digits in pairs, e.g. \"1250\" -> \"12,50\".\n  const grouped = head.replace(/\\B(?=(\\d{2})+(?!\\d))/g, \",\");\n  return `${sign}₹${grouped},${last3}`;\n}\n\n/** Whole calendar days from `from` to `to` (both \"YYYY-MM-DD\"). Negative if `to` is earlier. */\nexport function daysBetween(from: string, to: string): number {\n  const start = Date.parse(`${from}T00:00:00Z`);\n  const end = Date.parse(`${to}T00:00:00Z`);\n  return Math.round((end - start) / MS_PER_DAY);\n}\n\n/** Adds a number of calendar days to a \"YYYY-MM-DD\" date and returns \"YYYY-MM-DD\". */\nexport function addDays(iso: string, days: number): string {\n  const date = new Date(`${iso}T00:00:00Z`);\n  date.setUTCDate(date.getUTCDate() + days);\n  return date.toISOString().slice(0, 10);\n}\n\n/** Formats \"YYYY-MM-DD\" for display, e.g. \"15 Jun 2025\". */\nexport function formatDate(iso: string): string {\n  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(\"en-IN\", {\n    day: \"2-digit\",\n    month: \"short\",\n    year: \"numeric\",\n    timeZone: \"UTC\",\n  });\n}\n\n\n--- src\\App.tsx ---\nimport { useState } from \"react\";\nimport Sidebar, { type ScreenId } from \"./components/Sidebar\";\nimport Overview from \"./screens/Overview\";\nimport Placeholder from \"./screens/Placeholder\";\n\nexport default function App() {\n  const [screen, setScreen] = useState<ScreenId>(\"overview\");\n\n  return (\n    <div className=\"flex min-h-screen bg-slate-50\">\n      <Sidebar active={screen} onNavigate={setScreen} />\n      <main className=\"flex-1 p-8\">{renderScreen(screen)}</main>\n    </div>\n  );\n}\n\nfunction renderScreen(screen: ScreenId) {\n  switch (screen) {\n    case \"overview\":\n      return <Overview />;\n    case \"invoices\":\n      return <Placeholder title=\"Invoices\" />;\n    case \"forecast\":\n      return <Placeholder title=\"Cash Forecast\" />;\n    case \"bills\":\n      return <Placeholder title=\"Bills\" />;\n  }\n}\n\n\n--- src\\screens\\Overview.tsx ---\nimport { useState } from \"react\";\nimport StatCard from \"../components/StatCard\";\nimport { TODAY, bills, cashAccounts, clients, invoices } from \"../data/seed\";\nimport type { Invoice, InvoiceStatus } from \"../types\";\nimport { addDays, daysBetween, formatDate, formatINR } from \"../utils/format\";\n\ntype FilterTab = \"all\" | \"overdue\" | \"sent\" | \"draft\";\n\ninterface TabDef {\n  id: FilterTab;\n  label: string;\n}\n\nconst TABS: TabDef[] = [\n  { id: \"all\", label: \"All\" },\n  { id: \"overdue\", label: \"Overdue\" },\n  { id: \"sent\", label: \"Sent\" },\n  { id: \"draft\", label: \"Draft\" },\n];\n\nconst DUE_SOON_DAYS = 14;\nconst BILLS_WINDOW_DAYS = 30;\n\nconst STATUS_STYLES: Record<InvoiceStatus, string> = {\n  draft: \"bg-slate-100 text-slate-700\",\n  sent: \"bg-blue-100 text-blue-800\",\n  overdue: \"bg-red-100 text-red-800\",\n  paid: \"bg-emerald-100 text-emerald-800\",\n};\n\nconst STATUS_LABELS: Record<InvoiceStatus, string> = {\n  draft: \"Draft\",\n  sent: \"Sent\",\n  overdue: \"Overdue\",\n  paid: \"Paid\",\n};\n\nfunction sumBy<T>(items: readonly T[], pick: (item: T) => number): number {\n  return items.reduce((total, item) => total + pick(item), 0);\n}\n\nfunction clientName(clientId: string): string {\n  return clients.find((client) => client.id === clientId)?.name ?? \"Unknown client\";\n}\n\nfunction daysOverdue(invoice: Invoice): number {\n  return invoice.dueDate < TODAY ? daysBetween(invoice.dueDate, TODAY) : 0;\n}\n\nexport default function Overview() {\n  const [activeTab, setActiveTab] = useState<FilterTab>(\"all\");\n\n  const dueSoonEnd = addDays(TODAY, DUE_SOON_DAYS);\n  const billsEnd = addDays(TODAY, BILLS_WINDOW_DAYS);\n\n  const unpaid = invoices.filter((invoice) => invoice.status !== \"paid\");\n  const overdue = unpaid.filter((invoice) => invoice.status === \"overdue\");\n  const dueSoon = unpaid.filter(\n    (invoice) => invoice.dueDate >= TODAY && invoice.dueDate <= dueSoonEnd,\n  );\n  const upcomingBills = bills.filter(\n    (bill) => bill.status === \"upcoming\" && bill.dueDate >= TODAY && bill.dueDate <= billsEnd,\n  );\n  const currentCash = sumBy(cashAccounts, (account) => account.balanceINR);\n\n  const rows = unpaid\n    .filter((invoice) => activeTab === \"all\" || invoice.status === activeTab)\n    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));\n\n  function tabCount(tab: FilterTab): number {\n    return tab === \"all\" ? unpaid.length : unpaid.filter((invoice) => invoice.status === tab).length;\n  }\n\n  return (\n    <section className=\"space-y-8\">\n      <h1 className=\"text-2xl font-semibold text-slate-900\">Overview</h1>\n\n      <div className=\"grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4\">\n        <StatCard\n          label=\"Current Cash\"\n          value={formatINR(currentCash)}\n          subtitle={`Sum of ${cashAccounts.length} cash account balances`}\n        />\n        <StatCard\n          label=\"Total Overdue\"\n          value={formatINR(sumBy(overdue, (invoice) => invoice.amountINR))}\n          subtitle={`${overdue.length} overdue ${overdue.length === 1 ? \"invoice\" : \"invoices\"}`}\n        />\n        <StatCard\n          label=\"Due Next 14 Days\"\n          value={formatINR(sumBy(dueSoon, (invoice) => invoice.amountINR))}\n          subtitle={`${dueSoon.length} unpaid ${dueSoon.length === 1 ? \"invoice\" : \"invoices\"} due by ${formatDate(dueSoonEnd)}`}\n        />\n        <StatCard\n          label=\"Upcoming Bills\"\n          value={formatINR(sumBy(upcomingBills, (bill) => bill.amountINR))}\n          subtitle=\"Bills with status upcoming, due within 30 days\"\n        />\n      </div>\n\n      <div className=\"rounded-lg border border-slate-200 bg-white shadow-sm\">\n        <div className=\"flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-5 py-4\">\n          <h2 className=\"text-lg font-semibold text-slate-900\">Who Owes Me</h2>\n          <div role=\"tablist\" aria-label=\"Filter invoices by status\" className=\"flex gap-1\">\n            {TABS.map((tab) => {\n              const isActive = tab.id === activeTab;\n              return (\n                <button\n                  key={tab.id}\n                  type=\"button\"\n                  role=\"tab\"\n                  aria-selected={isActive}\n                  onClick={() => setActiveTab(tab.id)}\n                  className={\n                    isActive\n                      ? \"rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white\"\n                      : \"rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100\"\n                  }\n                >\n                  {tab.label} ({tabCount(tab.id)})\n                </button>\n              );\n            })}\n          </div>\n        </div>\n\n        <div className=\"overflow-x-auto\">\n          <table className=\"min-w-full divide-y divide-slate-200 text-sm\">\n            <thead className=\"bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500\">\n              <tr>\n                <th className=\"px-5 py-3 font-medium\">Client</th>\n                <th className=\"px-5 py-3 font-medium\">Invoice</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Amount</th>\n                <th className=\"px-5 py-3 font-medium\">Due Date</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Days Overdue</th>\n                <th className=\"px-5 py-3 font-medium\">Status</th>\n              </tr>\n            </thead>\n            <tbody className=\"divide-y divide-slate-100\">\n              {rows.map((invoice) => {\n                const late = daysOverdue(invoice);\n                return (\n                  <tr key={invoice.id} className=\"text-slate-700\">\n                    <td className=\"px-5 py-3 font-medium text-slate-900\">{clientName(invoice.clientId)}</td>\n                    <td className=\"px-5 py-3\">\n                      <span className=\"block\">{invoice.id}</span>\n                      <span className=\"block text-xs text-slate-500\">{invoice.description}</span>\n                    </td>\n                    <td className=\"px-5 py-3 text-right tabular-nums\">{formatINR(invoice.amountINR)}</td>\n                    <td className=\"px-5 py-3\">{formatDate(invoice.dueDate)}</td>\n                    <td className={`px-5 py-3 text-right tabular-nums ${late > 0 ? \"text-red-700\" : \"\"}`}>\n                      {late}\n                    </td>\n                    <td className=\"px-5 py-3\">\n                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[invoice.status]}`}>\n                        {STATUS_LABELS[invoice.status]}\n                      </span>\n                    </td>\n                  </tr>\n                );\n              })}\n              {rows.length === 0 ? (\n                <tr>\n                  <td colSpan={6} className=\"px-5 py-8 text-center text-slate-500\">\n                    No invoices in this view.\n                  </td>\n                </tr>\n              ) : null}\n            </tbody>\n          </table>\n        </div>\n      </div>\n    </section>\n  );\n}\n"
+        },
+        {
+          "id": "47729431-e115-4b34-96fa-a4f73deb3e66",
+          "name": "write_file",
+          "args": {
+            "file_path": "src/utils/invoices.ts",
+            "content": "import type { Client, FollowUp, Invoice } from \"../types\";\nimport { addDays } from \"./format\";\n\nexport interface ClientBalance {\n  client: Client;\n  outstandingINR: number;\n  invoiceCount: number;\n}\n\nconst REMINDER_WINDOW_DAYS = 14;\n\n/** True for every status except \"paid\" (draft, sent, overdue). */\nexport function isUnpaid(invoice: Invoice): boolean {\n  return invoice.status !== \"paid\";\n}\n\n/**\n * One row per client, summing only unpaid invoices.\n * Sorted by outstanding amount (descending), then client name (ascending).\n */\nexport function outstandingByClient(clients: readonly Client[], invoices: readonly Invoice[]): ClientBalance[] {\n  const unpaid = invoices.filter(isUnpaid);\n\n  return clients\n    .map((client) => {\n      const mine = unpaid.filter((invoice) => invoice.clientId === client.id);\n      return {\n        client,\n        outstandingINR: mine.reduce((total, invoice) => total + invoice.amountINR, 0),\n        invoiceCount: mine.length,\n      };\n    })\n    .sort(\n      (a, b) =>\n        b.outstandingINR - a.outstandingINR || a.client.name.localeCompare(b.client.name),\n    );\n}\n\n/** Follow-ups for one invoice, newest first. */\nexport function followUpsFor(invoiceId: string, followUps: readonly FollowUp[]): FollowUp[] {\n  return followUps\n    .filter((followUp) => followUp.invoiceId === invoiceId)\n    .sort((a, b) => b.date.localeCompare(a.date));\n}\n\n/**\n * An overdue invoice needs a reminder when it has no follow-up\n * dated on or after (today - 14 days).\n */\nexport function needsReminder(invoice: Invoice, followUps: readonly FollowUp[], today: string): boolean {\n  if (invoice.status !== \"overdue\") {\n    return false;\n  }\n  const windowStart = addDays(today, -REMINDER_WINDOW_DAYS);\n  const hasRecent = followUps.some(\n    (followUp) => followUp.invoiceId === invoice.id && followUp.date >= windowStart,\n  );\n  return !hasRecent;\n}\n"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "Successfully created src\\utils\\invoices.ts"
+        },
+        {
+          "id": "fc3efdd6-302a-4c91-9f43-bb1ecf0781a4",
+          "name": "write_file",
+          "args": {
+            "file_path": "src/components/StatusBadge.tsx",
+            "content": "import type { InvoiceStatus } from \"../types\";\n\n// Duplicated from Overview.tsx by design: Overview stays untouched.\nconst STATUS_STYLES: Record<InvoiceStatus, string> = {\n  draft: \"bg-slate-100 text-slate-700\",\n  sent: \"bg-blue-100 text-blue-800\",\n  overdue: \"bg-red-100 text-red-800\",\n  paid: \"bg-emerald-100 text-emerald-800\",\n};\n\nconst STATUS_LABELS: Record<InvoiceStatus, string> = {\n  draft: \"Draft\",\n  sent: \"Sent\",\n  overdue: \"Overdue\",\n  paid: \"Paid\",\n};\n\ninterface StatusBadgeProps {\n  status: InvoiceStatus;\n}\n\nexport default function StatusBadge({ status }: StatusBadgeProps) {\n  return (\n    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[status]}`}>\n      {STATUS_LABELS[status]}\n    </span>\n  );\n}\n"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "Successfully created src\\components\\StatusBadge.tsx"
+        },
+        {
+          "id": "5022ea2a-b169-42f5-aa4c-8d3273a32c02",
+          "name": "write_file",
+          "args": {
+            "content": "import { useState } from \"react\";\nimport StatusBadge from \"../components/StatusBadge\";\nimport { TODAY, clients, followUps, invoices } from \"../data/seed\";\nimport type { Invoice, InvoiceStatus } from \"../types\";\nimport { daysBetween, formatDate, formatINR } from \"../utils/format\";\nimport { followUpsFor, needsReminder, outstandingByClient } from \"../utils/invoices\";\n\ntype FilterTab = \"all\" | InvoiceStatus;\n\ninterface TabDef {\n  id: FilterTab;\n  label: string;\n}\n\nconst TABS: TabDef[] = [\n  { id: \"all\", label: \"All\" },\n  { id: \"draft\", label: \"Draft\" },\n  { id: \"sent\", label: \"Sent\" },\n  { id: \"overdue\", label: \"Overdue\" },\n  { id: \"paid\", label: \"Paid\" },\n];\n\nfunction clientName(clientId: string): string {\n  return clients.find((client) => client.id === clientId)?.name ?? \"Unknown client\";\n}\n\nfunction daysOverdue(invoice: Invoice): number {\n  return invoice.status !== \"paid\" && invoice.dueDate < TODAY ? daysBetween(invoice.dueDate, TODAY) : 0;\n}\n\nexport default function Invoices() {\n  const [activeTab, setActiveTab] = useState<FilterTab>(\"all\");\n  const [selectedId, setSelectedId] = useState<string | null>(null);\n\n  const rows = invoices\n    .filter((invoice) => activeTab === \"all\" || invoice.status === activeTab)\n    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));\n\n  function tabCount(tab: FilterTab): number {\n    return tab === \"all\" ? invoices.length : invoices.filter((invoice) => invoice.status === tab).length;\n  }\n\n  const balances = outstandingByClient(clients, invoices);\n  const selectedInvoice = invoices.find((invoice) => invoice.id === selectedId) ?? null;\n  const selectedFollowUps = selectedInvoice ? followUpsFor(selectedInvoice.id, followUps) : [];\n\n  return (\n    <section className=\"space-y-8\">\n      <h1 className=\"text-2xl font-semibold text-slate-900\">Invoices</h1>\n\n      <div className=\"rounded-lg border border-slate-200 bg-white shadow-sm\">\n        <div className=\"flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-5 py-4\">\n          <h2 className=\"text-lg font-semibold text-slate-900\">All Invoices</h2>\n          <div role=\"tablist\" aria-label=\"Filter invoices by status\" className=\"flex gap-1\">\n            {TABS.map((tab) => {\n              const isActive = tab.id === activeTab;\n              return (\n                <button\n                  key={tab.id}\n                  type=\"button\"\n                  role=\"tab\"\n                  aria-selected={isActive}\n                  onClick={() => setActiveTab(tab.id)}\n                  className={\n                    isActive\n                      ? \"rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white\"\n                      : \"rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100\"\n                  }\n                >\n                  {tab.label} ({tabCount(tab.id)})\n                </button>\n              );\n            })}\n          </div>\n        </div>\n\n        <div className=\"overflow-x-auto\">\n          <table className=\"min-w-full divide-y divide-slate-200 text-sm\">\n            <thead className=\"bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500\">\n              <tr>\n                <th className=\"px-5 py-3 font-medium\">Invoice</th>\n                <th className=\"px-5 py-3 font-medium\">Client</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Amount</th>\n                <th className=\"px-5 py-3 font-medium\">Issue Date</th>\n                <th className=\"px-5 py-3 font-medium\">Due Date</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Days Overdue</th>\n                <th className=\"px-5 py-3 font-medium\">Status</th>\n                <th className=\"px-5 py-3 font-medium\">Reminder</th>\n              </tr>\n            </thead>\n            <tbody className=\"divide-y divide-slate-100\">\n              {rows.map((invoice) => {\n                const late = daysOverdue(invoice);\n                const isSelected = invoice.id === selectedId;\n                const reminder = needsReminder(invoice, followUps, TODAY);\n                return (\n                  <tr\n                    key={invoice.id}\n                    onClick={() => setSelectedId(invoice.id)}\n                    className={`cursor-pointer text-slate-700 ${isSelected ? \"bg-slate-50\" : \"\"}`}\n                  >\n                    <td className=\"px-5 py-3\">\n                      <span className=\"block font-medium text-slate-900\">{invoice.id}</span>\n                      <span className=\"block text-xs text-slate-500\">{invoice.description}</span>\n                    </td>\n                    <td className=\"px-5 py-3\">{clientName(invoice.clientId)}</td>\n                    <td className=\"px-5 py-3 text-right tabular-nums\">{formatINR(invoice.amountINR)}</td>\n                    <td className=\"px-5 py-3\">{formatDate(invoice.issueDate)}</td>\n                    <td className=\"px-5 py-3\">{formatDate(invoice.dueDate)}</td>\n                    <td className={`px-5 py-3 text-right tabular-nums ${late > 0 ? \"text-red-700\" : \"\"}`}>\n                      {late}\n                    </td>\n                    <td className=\"px-5 py-3\">\n                      <StatusBadge status={invoice.status} />\n                    </td>\n                    <td className=\"px-5 py-3\">\n                      {reminder ? (\n                        <span className=\"rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800\">\n                          Follow up\n                        </span>\n                      ) : (\n                        \"—\"\n                      )}\n                    </td>\n                  </tr>\n                );\n              })}\n              {rows.length === 0 ? (\n                <tr>\n                  <td colSpan={8} className=\"px-5 py-8 text-center text-slate-500\">\n                    No invoices in this view.\n                  </td>\n                </tr>\n              ) : null}\n            </tbody>\n          </table>\n        </div>\n      </div>\n\n      <div className=\"rounded-lg border border-slate-200 bg-white shadow-sm\">\n        <div className=\"border-b border-slate-200 px-5 py-4\">\n          <h2 className=\"text-lg font-semibold text-slate-900\">Client Balances</h2>\n        </div>\n        <div className=\"overflow-x-auto\">\n          <table className=\"min-w-full divide-y divide-slate-200 text-sm\">\n            <thead className=\"bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500\">\n              <tr>\n                <th className=\"px-5 py-3 font-medium\">Client</th>\n                <th className=\"px-5 py-3 font-medium\">City</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Unpaid Invoices</th>\n                <th className=\"px-5 py-3 text-right font-medium\">Outstanding</th>\n              </tr>\n            </thead>\n            <tbody className=\"divide-y divide-slate-100\">\n              {balances.map((balance) => (\n                <tr key={balance.client.id} className=\"text-slate-700\">\n                  <td className=\"px-5 py-3 font-medium text-slate-900\">{balance.client.name}</td>\n                  <td className=\"px-5 py-3\">{balance.client.city}</td>\n                  <td className=\"px-5 py-3 text-right tabular-nums\">{balance.invoiceCount}</td>\n                  <td className=\"px-5 py-3 text-right tabular-nums\">{formatINR(balance.outstandingINR)}</td>\n                </tr>\n              ))}\n            </tbody>\n          </table>\n        </div>\n      </div>\n\n      <div className=\"rounded-lg border border-slate-200 bg-white shadow-sm\">\n        <div className=\"border-b border-slate-200 px-5 py-4\">\n          <h2 className=\"text-lg font-semibold text-slate-900\">Follow-Up History</h2>\n        </div>\n        <div className=\"px-5 py-4 text-sm\">\n          {selectedInvoice === null ? (\n            <p className=\"text-slate-500\">Select an invoice to see its follow-up history.</p>\n          ) : selectedFollowUps.length === 0 ? (\n            <p className=\"text-slate-500\">No follow-ups recorded for this invoice.</p>\n          ) : (\n            <ul className=\"divide-y divide-slate-100\">\n              {selectedFollowUps.map((followUp) => (\n                <li key={followUp.id} className=\"py-3 text-slate-700\">\n                  <span className=\"font-medium text-slate-900\">{formatDate(followUp.date)}</span>\n                  <span className=\"ml-3 text-xs capitalize text-slate-500\">{followUp.channel}</span>\n                  <p className=\"mt-1\">{followUp.note}</p>\n                </li>\n              ))}\n            </ul>\n          )}\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+            "file_path": "src/screens/Invoices.tsx"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "Successfully created src\\screens\\Invoices.tsx"
+        },
+        {
+          "id": "0d240b3b-319e-409f-ab13-72e667812e4d",
+          "name": "apply_diff",
+          "args": {
+            "file_path": "src/App.tsx",
+            "diff": "<<<<<<< SEARCH\nimport Overview from \"./screens/Overview\";\nimport Placeholder from \"./screens/Placeholder\";\n=======\nimport Invoices from \"./screens/Invoices\";\nimport Overview from \"./screens/Overview\";\nimport Placeholder from \"./screens/Placeholder\";\n>>>>>>> REPLACE\n<<<<<<< SEARCH\n      return <Placeholder title=\"Invoices\" />;\n=======\n      return <Invoices />;\n>>>>>>> REPLACE\n"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "OK: Applied 2 diff block(s) to src\\App.tsx",
+          "diff": {
+            "additions": 2,
+            "deletions": 1,
+            "hunks": [
+              {
+                "header": "@@ -1,5 +1,6 @@",
+                "lines": [
+                  {
+                    "kind": "ctx",
+                    "text": "import { useState } from \"react\";"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "import Sidebar, { type ScreenId } from \"./components/Sidebar\";"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "import Invoices from \"./screens/Invoices\";"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "import Overview from \"./screens/Overview\";"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "import Placeholder from \"./screens/Placeholder\";"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "header": "@@ -19,7 +20,7 @@",
+                "lines": [
+                  {
+                    "kind": "ctx",
+                    "text": "    case \"overview\":"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "      return <Overview />;"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "    case \"invoices\":"
+                  },
+                  {
+                    "kind": "del",
+                    "text": "      return <Placeholder title=\"Invoices\" />;"
+                  },
+                  {
+                    "kind": "add",
+                    "text": "      return <Invoices />;"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "    case \"forecast\":"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "      return <Placeholder title=\"Cash Forecast\" />;"
+                  },
+                  {
+                    "kind": "ctx",
+                    "text": "    case \"bills\":"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "68236658-cefb-45c7-a2be-38099bf5efdc",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/utils/invoices.ts"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "WARNING: src\\utils\\invoices.ts was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "9bb3c17d-858e-48ff-a18a-95a0f112a101",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/components/StatusBadge.tsx"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "WARNING: src\\components\\StatusBadge.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "04bf43c6-5896-4a0b-ad95-68c715ecb717",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/screens/Invoices.tsx"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "WARNING: src\\screens\\Invoices.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "c5bd9055-9675-42b8-aa82-f7879bb71e4f",
+          "name": "lint_file",
+          "args": {
+            "file_path": "src/App.tsx"
+          },
+          "agentId": "parent.editor-0c2e25",
+          "result": "WARNING: src\\App.tsx was not checked — esbuild is unavailable in this workspace."
+        },
+        {
+          "id": "parent.tester-89f400",
+          "name": "spawn_agent",
+          "args": {
+            "task": "Host OS is Windows; use Windows-appropriate shell commands. Run `npm run build` in this project (it runs `tsc --noEmit && vite build`). Do not install packages and do not edit any files. Report the actual pass/fail for tsc and for vite build, with exact error messages (file and line) if any, and any warnings. Then run `git status --short` and `git diff --stat` and report which files are modified or new. Confirm specifically whether src/screens/Overview.tsx, src/data/seed.ts, and src/types.ts show as modified; they must not. Expected new files: src/utils/invoices.ts, src/components/StatusBadge.tsx, src/screens/Invoices.tsx. Expected modified file: src/App.tsx. Return the real command output summary, not a paraphrase.",
+            "agentType": "tester",
+            "depth": 1
+          },
+          "result": "✓ 3 turns · 5 tool calls"
+        },
+        {
+          "id": "d543c2d6-9853-49cd-bb17-8b7952a3a9c9",
+          "name": "run_powershell_command",
+          "args": {
+            "command": "npm run build 2>&1 | Select-Object -Last 60; Write-Output \"EXIT=$LASTEXITCODE\""
+          },
+          "agentId": "parent.tester-89f400",
+          "result": "Error: PowerShell (pwsh) isn't available on this machine. If this is macOS/Linux, re-run using run_terminal_command with a POSIX (bash/sh) command instead — do NOT retry PowerShell here.\n(To use PowerShell, install it: Mac/Linux `brew install --cask powershell`, Windows `winget install Microsoft.PowerShell`.)",
+          "testResult": {
+            "kind": "build",
+            "runner": null,
+            "status": "unknown",
+            "verdict": "",
+            "counts": {},
+            "failed_ids": [],
+            "new_failures": [],
+            "pre_existing": [],
+            "attention": false,
+            "command": "npm run build 2>&1 | Select-Object -Last 60; Write-Output \"EXIT=$LASTEXITCODE\""
+          }
+        },
+        {
+          "id": "5e7e9d5e-9d8b-435c-ab8e-780b14eb4fad",
+          "name": "run_powershell_command",
+          "args": {
+            "command": "git status --short; Write-Output \"---DIFFSTAT---\"; git diff --stat"
+          },
+          "agentId": "parent.tester-89f400",
+          "result": "Error: PowerShell (pwsh) isn't available on this machine. If this is macOS/Linux, re-run using run_terminal_command with a POSIX (bash/sh) command instead — do NOT retry PowerShell here.\n(To use PowerShell, install it: Mac/Linux `brew install --cask powershell`, Windows `winget install Microsoft.PowerShell`.)"
+        },
+        {
+          "id": "be122af9-720d-4fd6-94a0-bb88cc3953dd",
+          "name": "run_terminal_command",
+          "args": {
+            "command": "npm run build"
+          },
+          "agentId": "parent.tester-89f400",
+          "result": "Command: npm run build\nExit Code: 0\nSTDOUT:\n\n> ps-01-back-office@0.0.0 build\n> tsc --noEmit && vite build\n\n\u001b[36mvite v6.4.6 \u001b[32mbuilding for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 38 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.42 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.29 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[35massets/index-DBFdh7q8.css  \u001b[39m\u001b[1m\u001b[2m 15.08 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.86 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[36massets/index-CimBPq0o.js   \u001b[39m\u001b[1m\u001b[2m241.04 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 73.78 kB\u001b[22m\n\u001b[32m✓ built in 1.67s\u001b[39m\n\nSTDERR:\n",
+          "testResult": {
+            "kind": "build",
+            "runner": null,
+            "status": "unknown",
+            "verdict": "",
+            "counts": {},
+            "failed_ids": [],
+            "new_failures": [],
+            "pre_existing": [],
+            "attention": false,
+            "command": "npm run build"
+          }
+        },
+        {
+          "id": "b6831244-9bed-45b2-a586-768105427e12",
+          "name": "run_terminal_command",
+          "args": {
+            "command": "git status --short"
+          },
+          "agentId": "parent.tester-89f400",
+          "result": "Command: git status --short\nExit Code: 0\nSTDOUT:\n D dist/assets/index-Qx8vtnuO.js\n D dist/assets/index-s5ns-jhQ.css\n M dist/index.html\n M src/App.tsx\n?? dist/assets/index-CimBPq0o.js\n?? dist/assets/index-DBFdh7q8.css\n?? src/components/StatusBadge.tsx\n?? src/screens/Invoices.tsx\n?? src/utils/invoices.ts\n\nSTDERR:\n"
+        },
+        {
+          "id": "f46a4ed6-d0fa-4f9a-936d-119e2219b05a",
+          "name": "run_terminal_command",
+          "args": {
+            "command": "git diff --stat"
+          },
+          "agentId": "parent.tester-89f400",
+          "result": "Command: git diff --stat\nExit Code: 0\nSTDOUT:\n dist/assets/index-Qx8vtnuO.js  | 49 ------------------------------------------\n dist/assets/index-s5ns-jhQ.css |  1 -\n dist/index.html                |  4 ++--\n src/App.tsx                    |  3 ++-\n 4 files changed, 4 insertions(+), 53 deletions(-)\n\nSTDERR:\nwarning: in the working copy of 'dist/index.html', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/App.tsx', LF will be replaced by CRLF the next time Git touches it\n"
+        }
+      ],
+      "thinking": "Created `src/utils/invoices.ts`, `src/components/StatusBadge.tsx`, and `src/screens/Invoices.tsx`, and edited `src/App.tsx` to add the Invoices import and render `<Invoices />` for the invoices case. Overview.tsx, seed.ts, and types.ts are untouched.\n\nStatus counts: All 13, Draft 2, Sent 4, Overdue 4, Paid 3.\n\nClient balances (unpaid only): Brightpath Edu Labs ₹3,25,000 (2), Greenleaf Organics ₹1,68,000 (2), Meera Iyer ₹1,65,000 (2), Kaveri Textiles ₹62,000 (1), Sunita Kapoor ₹24,000 (1), Vikram Choudhury ₹18,000 (1), Priya Sharma ₹16,000 (1).\n\nReminders flagged: INV-003, INV-005, INV-006. INV-004 has a follow-up 12 days ago, so it is not flagged.\n\nThe `lint_file` checks were skipped because esbuild is unavailable, and I have no shell, so `npm run build` was not run. Edited, not test-verified (no shell).The Invoices screen item is now marked completed. The build item is cancelled on this agent's side and handed off: I have no shell, so the delegating agent needs to run `npm run build` and confirm Overview.tsx, seed.ts and types.ts are unchanged.\n\nFiles changed in Slice 02:\n- `src/utils/invoices.ts` (new): `isUnpaid`, `outstandingByClient`, `followUpsFor`, `needsReminder`.\n- `src/components/StatusBadge.tsx` (new): duplicated status styles and labels, nothing imported from Overview.\n- `src/screens/Invoices.tsx` (new): filter tabs, invoice table with reminder column, client balances, read-only follow-up history.\n- `src/App.tsx`: added the Invoices import and changed only the invoices case to `<Invoices />`.\n\nStatus counts: All 13, Draft 2, Sent 4, Overdue 4, Paid 3.\n\nClient balances (unpaid only): Brightpath ₹3,25,000 (2), Greenleaf ₹1,68,000 (2), Meera Iyer ₹1,65,000 (2), Kaveri ₹62,000 (1), Sunita Kapoor ₹24,000 (1), Vikram ₹18,000 (1), Priya Sharma ₹16,000 (1).\n\nEdited, not test-verified (no shell): the lint checks were skipped because esbuild is unavailable, and the build was not run.PowerShell isn't available on this machine, so I'll use the POSIX shell tool for the same commands.**Build: PASS.** `npm run build` (`tsc --noEmit && vite build`) exited 0.\n\n**Shell note:** The PowerShell tool reported that pwsh is not installed, and the machine looks like macOS/Linux. I ran the same commands through the POSIX shell tool instead. Nothing was installed and no files were edited.\n\n**tsc:** Passed. Because the script uses `&&`, vite only ran after tsc exited 0, and no type errors were printed.\n\n**vite build output (verbatim summary):**\n- `vite v6.4.6 building for production...`\n- `✓ 38 modules transformed.`\n- `dist/index.html 0.42 kB (gzip 0.29 kB)`\n- `dist/assets/index-DBFdh7q8.css 15.08 kB (gzip 3.86 kB)`\n- `dist/assets/index-CimBPq0o.js 241.04 kB (gzip 73.78 kB)`\n- `✓ built in 1.67s`\n- STDERR empty. No build warnings.\n\n**`git status --short`:**\n```\n D dist/assets/index-Qx8vtnuO.js\n D dist/assets/index-s5ns-jhQ.css\n M dist/index.html\n M src/App.tsx\n?? dist/assets/index-CimBPq0o.js\n?? dist/assets/index-DBFdh7q8.css\n?? src/components/StatusBadge.tsx\n?? src/screens/Invoices.tsx\n?? src/utils/invoices.ts\n```\n\n**`git diff --stat`:**\n```\n dist/assets/index-Qx8vtnuO.js  | 49 ------\n dist/assets/index-s5ns-jhQ.css |  1 -\n dist/index.html                |  4 ++--\n src/App.tsx                    |  3 ++-\n 4 files changed, 4 insertions(+), 53 deletions(-)\n```\nGit also printed two LF→CRLF line-ending warnings for `dist/index.html` and `src/App.tsx`. These are informational only.\n\n**Checks on the protected files:**\n- `src/screens/Overview.tsx`: not modified. ✅\n- `src/data/seed.ts`: not modified. ✅\n- `src/types.ts`: not modified. ✅\n\n**Against the expected file list:**\n- New files: `src/utils/invoices.ts`, `src/components/StatusBadge.tsx`, `src/screens/Invoices.tsx`. All three are present as untracked. ✅\n- Modified: `src/App.tsx`. ✅\n\n**Unexpected changes:** `dist/` is tracked in git. The build rebuilt it, so the old bundle files were deleted and the new ones added, and `dist/index.html` was modified. These changes come from the build, not from source edits, but they will show up in any commit. Decide whether `dist/` should be committed or gitignored."
+    },
+    {
+      "role": "assistant",
+      "content": "Slice 02 (the Invoices screen) is implemented. `npm run build` passes with no type errors and no warnings. I have not checked the screen in a browser.\n\n**Changed files**\n- `src/screens/Invoices.tsx` (new): status tabs, invoice table with a Reminder column, a Client Balances table, and a read-only Follow-Up History panel.\n- `src/utils/invoices.ts` (new): `isUnpaid`, `outstandingByClient`, `followUpsFor`, `needsReminder`.\n- `src/components/StatusBadge.tsx` (new): its own copy of the status styles and labels, as you decided.\n- `src/App.tsx`: one import added, and the invoices case now renders `<Invoices />`.\n\n`Overview.tsx`, `seed.ts`, and `types.ts` are unchanged. Git confirms this.\n\n**Invoice counts by status**\n- All: 13\n- Draft: 2\n- Sent: 4\n- Overdue: 4\n- Paid: 3\n\n**Client outstanding balances (unpaid only)**\n- Brightpath Edu Labs: ₹3,25,000 (2 invoices)\n- Greenleaf Organics: ₹1,68,000 (2)\n- Meera Iyer: ₹1,65,000 (2)\n- Kaveri Textiles Pvt Ltd: ₹62,000 (1)\n- Sunita Kapoor: ₹24,000 (1)\n- Vikram Choudhury: ₹18,000 (1)\n- Priya Sharma: ₹16,000 (1)\n\nI checked these by hand against the seed data and they match.\n\n**Verification**\n- `npm run build` (`tsc --noEmit && vite build`) exited 0. Vite built 38 modules with no warnings.\n- The build regenerated the tracked `dist/` folder. Git now shows the old bundle files as deleted, the new ones as untracked, and `dist/index.html` as modified. Decide whether `dist/` should stay in git or be ignored before you commit this slice.",
+      "timestamp": 1795272253255
+    }
+  ],
+  "tokensIn": 169909,
+  "tokensOut": 55027,
+  "cacheReads": 808729,
+  "cacheWrites": 192603,
+  "totalCost": 0,
+  "favourite": false,
+  "agentState": {
+    "plan_mode": false,
+    "plan": "",
+    "unlocked_tools": []
+  },
+  "lastContextSnapshot": {
+    "system_prompt": 12970,
+    "tools": 5497,
+    "memory": 0,
+    "history": 27350,
+    "total": 45817,
+    "context_window": 1000000,
+    "fill_fraction": 0.0458,
+    "model_id": "bedrock:us.anthropic.claude-haiku-5-5"
+  }
+}
